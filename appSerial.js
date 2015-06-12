@@ -36,6 +36,28 @@ var scraper = require('json-scrape')();
 var serialport = require("serialport");
 var SerialPort = serialport.SerialPort; // localize object constructor
 
+// Define the number of samples to keep track of.  The higher the number,
+// the more the readings will be smoothed, but the slower the output will
+// respond to the input.  Using a constant rather than a normal variable lets
+// use this value to determine the size of the readings array.
+var smooth_numReadings = 10;
+var smooth_readings_R= new Array(smooth_numReadings);      // the readings from the analog input
+var smooth_readings_G= new Array(smooth_numReadings);      // the readings from the analog input
+var smooth_readings_B= new Array(smooth_numReadings);      // the readings from the analog input
+var smooth_index = 0;                  // the index of the current reading
+var smooth_total_R = 0;                  // the running total
+var smooth_total_G = 0;                  // the running total
+var smooth_total_B = 0;                  // the running total
+var smooth_average_R = 0;                // the average
+var smooth_average_G = 0;                // the average
+var smooth_average_B = 0;                // the average
+for (var thisReading = 0; thisReading < smooth_numReadings; thisReading++)
+  smooth_readings_R[thisReading] = 0; 
+for (var thisReading = 0; thisReading < smooth_numReadings; thisReading++)
+  smooth_readings_G[thisReading] = 0; 
+for (var thisReading = 0; thisReading < smooth_numReadings; thisReading++)
+  smooth_readings_B[thisReading] = 0; 
+
 var sp = new SerialPort(portName, {
   baudrate: 115200,
   parser: serialport.parsers.readline("\r\n")
@@ -119,16 +141,38 @@ sp.on("data", function (data) {
 });
 scraper.on('data', function (cleandata) {
     //console.log(cleandata);
+    smooth_total_R= smooth_total_R - smooth_readings_R[smooth_index];         
+    smooth_total_G= smooth_total_G - smooth_readings_G[smooth_index];         
+    smooth_total_B= smooth_total_B - smooth_readings_B[smooth_index];         
+
+    smooth_readings_R[smooth_index] = cleandata.RAW_R; 
+    smooth_readings_G[smooth_index] = cleandata.RAW_G; 
+    smooth_readings_B[smooth_index] = cleandata.RAW_B; 
     
-    RAW[0] = cleandata.RAW_R;
-    RAW[1] = cleandata.RAW_G;
-    RAW[2] = cleandata.RAW_B;
+    smooth_total_R= smooth_total_R + smooth_readings_R[smooth_index];       
+    smooth_total_G= smooth_total_G + smooth_readings_G[smooth_index];       
+    smooth_total_B= smooth_total_B + smooth_readings_B[smooth_index];       
+
+    smooth_index++;                    
+    if (smooth_index >= smooth_numReadings)              
+      smooth_index = 0;                           
+    smooth_average_R = smooth_total_R / smooth_numReadings;         
+    smooth_average_G = smooth_total_G / smooth_numReadings;         
+    smooth_average_B = smooth_total_B / smooth_numReadings;         
+
+    
+    RAW[0] = smooth_average_R;
+    RAW[1] = smooth_average_G;
+    RAW[2] = smooth_average_B;
     RGB[0] = cleandata.RGB_R;
     RGB[1] = cleandata.RGB_G;
     RGB[2] = cleandata.RGB_B;
-    new_data["RAW_R"] = cleandata.RAW_R;
-    new_data["RAW_G"] = cleandata.RAW_G;
-    new_data["RAW_B"] = cleandata.RAW_B;
+    new_data["RAW_R"] = RAW[0];
+    new_data["RAW_G"] = RAW[1];
+    new_data["RAW_B"] = RAW[2];
+
+
+
     var i;
     for (i=0; i<3; i++) {
       RGB2[i] = Math.floor(((RAW[i] - fBlack[i]) * 255.0 )/(fWhite[i] - fBlack[i]) );

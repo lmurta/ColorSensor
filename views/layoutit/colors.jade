@@ -17,7 +17,6 @@ head
     link(rel='apple-touch-icon-precomposed', sizes='72x72', href='img/apple-touch-icon-72-precomposed.png')
     link(rel='apple-touch-icon-precomposed', href='img/apple-touch-icon-57-precomposed.png')
     link(rel='shortcut icon', href='img/favicon.png')
-
     script(type='text/javascript', src='/socket.io/socket.io.js')
     script(type='text/javascript', src='javascripts/jquery.min.js')
     link(href='http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css', rel='stylesheet')
@@ -30,18 +29,22 @@ head
     script(type='text/javascript').
       var arduinoPort, arduinoVersion;
       var now;
-      var timeTick =0;
+      var timeTick=0;
       var RAW= [];
       var RGB= [];
       var RGB2= [];
       var fBlack =[];
       var fWhite=[];
-      fBlack[0] = 21000;
+      var Correction=[];
+      fBlack[0] = 21000; 
       fBlack[1] = 13000;
       fBlack[2] = 21000;
       fWhite[0]= 34000;
       fWhite[1]= 21000;
       fWhite[2]= 34000;
+      Correction[0] = 0;
+      Correction[1] = 0;
+      Correction[2] = 0;
       function toggle(button){
         if(document.getElementById("buttonToggle").value=="OFF"){
           socket.emit('button update event', { status: 'OFF' });
@@ -56,15 +59,15 @@ head
           }, 1000);
       }
       $(function() {
-        $( "#slider_RW" ).slider({min: 0,max: 50000,value: 10000,
-            slide: function( event, ui ) {
-                  $( "#value_RW" ).text( "$" + ui.value );
-            }});
-        $( "#slider_RB" ).slider();
-        $( "#slider_GW" ).slider();
-        $( "#slider_GB" ).slider();
-        $( "#slider_BW" ).slider();
-        $( "#slider_BW" ).slider();
+        $( "#slider_RB" ).slider({min: 0,max: 50000,value: fBlack[0],slide: function( event, ui ) {$( "#value_RB" ).text( "RB:" + ui.value );fBlack[0]=ui.value;update(); }});
+        $( "#slider_GB" ).slider({min: 0,max: 50000,value: fBlack[1],slide: function( event, ui ) {$( "#value_GB" ).text( "GB:" + ui.value );fBlack[1]=ui.value;update(); }});
+        $( "#slider_BB" ).slider({min: 0,max: 50000,value: fBlack[2],slide: function( event, ui ) {$( "#value_BB" ).text( "BB:" + ui.value );fBlack[2]=ui.value;update(); }});
+        $( "#slider_RW" ).slider({min: 10000,max: 500000,value: fWhite[0],slide: function( event, ui ) {$( "#value_RW" ).text( "RW:" + ui.value );fWhite[0]=ui.value;update(); }});
+        $( "#slider_GW" ).slider({min: 10000,max: 500000,value: fWhite[1],slide: function( event, ui ) {$( "#value_GW" ).text( "GW:" + ui.value );fWhite[1]=ui.value;update();  }});
+        $( "#slider_BW" ).slider({min: 10000,max: 500000,value: fWhite[2],slide: function( event, ui ) {$( "#value_BW" ).text( "BW:" + ui.value );fWhite[2]=ui.value;update();  }});
+        $( "#slider_RM" ).slider({min: -100,max: 100,value: Correction[0],slide: function( event, ui ) {$( "#value_RM" ).text( "RM:" + ui.value );Correction[0]=ui.value;update(); }});
+        $( "#slider_GM" ).slider({min: -100,max: 100,value: Correction[1],slide: function( event, ui ) {$( "#value_GM" ).text( "GM:" + ui.value );Correction[1]=ui.value;update(); }});
+        $( "#slider_BM" ).slider({min: -100,max: 100,value: Correction[2],slide: function( event, ui ) {$( "#value_BM" ).text( "BM:" + ui.value );Correction[2]=ui.value;update(); }});
         startTicker();
         //$('.saveFileCheckbox').prop('checked', true);
         $('#saveFileCheckbox').change(function () {
@@ -114,6 +117,13 @@ head
           socket.emit('my other event', { my: 'client do server' });
         });
         function update() {
+          var i;
+          for (i=0; i<3; i++) {
+            RGB2[i] = Math.floor(((RAW[i] - fBlack[i]) * 255.0 )/(fWhite[i] - fBlack[i]) );
+            RGB2[i] += Correction[i];
+            if (RGB2[i] < 0) RGB2[i]=0;
+            if (RGB2[i] > 255) RGB2[i]=255;
+          };
           var d;
             d=[
               { data: dataToPlot[2], label:dataToPlotLabel[2]},
@@ -213,16 +223,29 @@ head
                     li
                       a(href='#') Separated link
       .row.clearfix
-        .col-md-10.column
-          h3
-            | Color Sensor
+        .col-md-8.column
+          h3 Color Sensor
           p
-          #slider_RW #value_RW 000
           #slider_RB
-          #slider_GW
+          p
+          #slider_RM
+          p
+          #slider_RW
+          p x
+          p
           #slider_GB
-          #slider_BW
+          p
+          #slider_GM
+          p
+          #slider_GW
+          p x
+          p
           #slider_BB
+          p
+          #slider_BM
+          p
+          #slider_BW
+          p
           #flot1.demo-flot(style="width:800px;height:400px")
           #footer
           h2
@@ -230,9 +253,19 @@ head
           ul
             li 
              | Conectar os sensores às portas analógicas A0-A5
-            li 
-             | Conectar o pHmetro na porta A5
 
+        .col-md-2.column
+          h3
+            | Color Sensor
+          #value_RB RB:
+          #value_RM RM:
+          #value_RW RW:
+          #value_GB GB:
+          #value_GM GM:
+          #value_GW GW:
+          #value_BB BB:
+          #value_BM BM:
+          #value_BW BW:
         .col-md-2.column
           #div_tick.analogLabel.colorTick :t
           #div_an0.analogLabel.colorA0(style="color:#FF0000") R
