@@ -29,8 +29,8 @@ var term = require( 'terminal-kit' ).terminal ;
 //var ArduinoFirmata = require('arduino-firmata');
 //var arduino = new ArduinoFirmata().connect();
 
-//var portName = "/dev/ttyUSB0";
-var portName = "/dev/ttyACM0";
+var portName = "/dev/ttyUSB0"; //Nano
+//var portName = "/dev/ttyACM0"; //UNO
 
 var scraper = require('json-scrape')();
 var serialport = require("serialport");
@@ -141,6 +141,10 @@ sp.on("data", function (data) {
 });
 scraper.on('data', function (cleandata) {
     //console.log(cleandata);
+    if (typeof cleandata.RAW_R != "number") {
+      console.log('This is not number');
+      return;
+    }
     smooth_total_R= smooth_total_R - smooth_readings_R[smooth_index];         
     smooth_total_G= smooth_total_G - smooth_readings_G[smooth_index];         
     smooth_total_B= smooth_total_B - smooth_readings_B[smooth_index];         

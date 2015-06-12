@@ -25,6 +25,7 @@ head
     script(type='text/javascript', src='javascripts/scripts.js')
     script(type='text/javascript', src='javascripts/jquery.flot.min.js')
     script(type='text/javascript', src='javascripts/jquery.flot.time.min.js')
+    script(type='text/javascript', src='javascripts/one-color-all.js')
 
     script(type='text/javascript').
       var arduinoPort, arduinoVersion;
@@ -36,6 +37,7 @@ head
       var fBlack =[];
       var fWhite=[];
       var Correction=[];
+      var myColor,hueColor;
       fBlack[0] = 21000; 
       fBlack[1] = 13000;
       fBlack[2] = 21000;
@@ -59,6 +61,7 @@ head
           }, 1000);
       }
       $(function() {
+        //alert('Hello, ' + one.color('#650042').lightness(.3).green(.4).hex() + ' world!');
         $( "#slider_RB" ).slider({min: 0,max: 50000,value: fBlack[0],slide: function( event, ui ) {$( "#value_RB" ).text( "RB:" + ui.value );fBlack[0]=ui.value;update(); }});
         $( "#slider_GB" ).slider({min: 0,max: 50000,value: fBlack[1],slide: function( event, ui ) {$( "#value_GB" ).text( "GB:" + ui.value );fBlack[1]=ui.value;update(); }});
         $( "#slider_BB" ).slider({min: 0,max: 50000,value: fBlack[2],slide: function( event, ui ) {$( "#value_BB" ).text( "BB:" + ui.value );fBlack[2]=ui.value;update(); }});
@@ -68,6 +71,20 @@ head
         $( "#slider_RM" ).slider({min: -100,max: 100,value: Correction[0],slide: function( event, ui ) {$( "#value_RM" ).text( "RM:" + ui.value );Correction[0]=ui.value;update(); }});
         $( "#slider_GM" ).slider({min: -100,max: 100,value: Correction[1],slide: function( event, ui ) {$( "#value_GM" ).text( "GM:" + ui.value );Correction[1]=ui.value;update(); }});
         $( "#slider_BM" ).slider({min: -100,max: 100,value: Correction[2],slide: function( event, ui ) {$( "#value_BM" ).text( "BM:" + ui.value );Correction[2]=ui.value;update(); }});
+        $( "#setBlack").click( function(){
+             console.log('button clicked');
+             fBlack[0] = RAW[0];$( "#slider_RB" ).slider('value', fWhite[0]);
+             fBlack[1] = RAW[1];$( "#slider_GB" ).slider('value', fWhite[1]);
+             fBlack[2] = RAW[0];$( "#slider_BB" ).slider('value', fWhite[2]);
+           }
+        );
+        $( "#setWhite").click( function(){
+              console.log('button clicked');
+             fWhite[0] = RAW[0]; $( "#slider_RW" ).slider('value', fWhite[0]);
+             fWhite[1] = RAW[1]; $( "#slider_GW" ).slider('value', fWhite[1]);
+             fWhite[2] = RAW[2]; $( "#slider_BW" ).slider('value', fWhite[2]);
+           }
+        );
         startTicker();
         //$('.saveFileCheckbox').prop('checked', true);
         $('#saveFileCheckbox').change(function () {
@@ -123,6 +140,12 @@ head
             RGB2[i] += Correction[i];
             if (RGB2[i] < 0) RGB2[i]=0;
             if (RGB2[i] > 255) RGB2[i]=255;
+            myColor = one.color('rgb(' + RGB2[0] + ',' + RGB2[1] + ',' + RGB2[2] + ')');
+            hueColor = one.color('gray');
+            hueColor.hue(myColor.hue()+1);
+            //$('#div_oneColor').css('background-color','rgb(' + hueColor.red() + ',' + hueColor.green() + ',' + hueColor.blue() + ')');
+            $('#div_oneColor').css('background-color',hueColor.css());
+            $('#div_oneColor').text(myColor.hue()) ;
           };
           var d;
             d=[
@@ -266,6 +289,8 @@ head
           #value_BB BB:
           #value_BM BM:
           #value_BW BW:
+          #setBlack.btn.btn-default Set Black
+          #setWhite.btn.btn-default Set White
         .col-md-2.column
           #div_tick.analogLabel.colorTick :t
           #div_an0.analogLabel.colorA0(style="color:#FF0000") R
@@ -275,6 +300,7 @@ head
           #div_G.analogLabel.colorA4(style="color:#00FF00") G
           #div_B.analogLabel.colorA5(style="color:#0000FF") B
           #div_RGB.analogLabel(style="background-color:#c0c0c0") RGB
+          #div_oneColor.analogLabel(style="background-color:#c0c0c0") oneColor
 
 
           //span.label.label-default Label
