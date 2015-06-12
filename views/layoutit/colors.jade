@@ -141,8 +141,8 @@ head
             if (RGB2[i] < 0) RGB2[i]=0;
             if (RGB2[i] > 255) RGB2[i]=255;
             myColor = one.color('rgb(' + RGB2[0] + ',' + RGB2[1] + ',' + RGB2[2] + ')');
-            hueColor = one.color('gray');
-            hueColor.hue(myColor.hue()+1);
+            hueColor = myColor.saturation(1).value(1);
+            //huecolor = hueColor.red(0);
             //$('#div_oneColor').css('background-color','rgb(' + hueColor.red() + ',' + hueColor.green() + ',' + hueColor.blue() + ')');
             $('#div_oneColor').css('background-color',hueColor.css());
             $('#div_oneColor').text(myColor.hue()) ;
