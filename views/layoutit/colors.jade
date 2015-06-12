@@ -1,0 +1,254 @@
+doctype html(lang='en')
+head
+    meta(charset='utf-8')
+    title PHT Arduinos Sensors
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(name='description', content='')
+    meta(name='author', content='')
+
+    link(href='stylesheets/bootstrap.min.css', rel='stylesheet')
+    link(href='stylesheets/style.css', rel='stylesheet')
+    // HTML5 shim, for IE6-8 support of HTML5 elements
+    //if lt IE 9
+      script(src='javascripts/html5shiv.js')
+    // Fav and touch icons
+    link(rel='apple-touch-icon-precomposed', sizes='144x144', href='img/apple-touch-icon-144-precomposed.png')
+    link(rel='apple-touch-icon-precomposed', sizes='114x114', href='img/apple-touch-icon-114-precomposed.png')
+    link(rel='apple-touch-icon-precomposed', sizes='72x72', href='img/apple-touch-icon-72-precomposed.png')
+    link(rel='apple-touch-icon-precomposed', href='img/apple-touch-icon-57-precomposed.png')
+    link(rel='shortcut icon', href='img/favicon.png')
+
+    script(type='text/javascript', src='/socket.io/socket.io.js')
+    script(type='text/javascript', src='javascripts/jquery.min.js')
+    link(href='http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css', rel='stylesheet')
+    script(type='text/javascript', src="//code.jquery.com/ui/1.11.4/jquery-ui.js")
+    script(type='text/javascript', src='javascripts/bootstrap.min.js')
+    script(type='text/javascript', src='javascripts/scripts.js')
+    script(type='text/javascript', src='javascripts/jquery.flot.min.js')
+    script(type='text/javascript', src='javascripts/jquery.flot.time.min.js')
+
+    script(type='text/javascript').
+      var arduinoPort, arduinoVersion;
+      var now;
+      var timeTick =0;
+      var RAW= [];
+      var RGB= [];
+      var RGB2= [];
+      var fBlack =[];
+      var fWhite=[];
+      fBlack[0] = 21000;
+      fBlack[1] = 13000;
+      fBlack[2] = 21000;
+      fWhite[0]= 34000;
+      fWhite[1]= 21000;
+      fWhite[2]= 34000;
+      function toggle(button){
+        if(document.getElementById("buttonToggle").value=="OFF"){
+          socket.emit('button update event', { status: 'OFF' });
+        }
+        else if(document.getElementById("buttonToggle").value=="ON"){
+          socket.emit('button update event', { status: 'ON' });
+        }
+      }
+      function startTicker() {
+          setInterval(function () {
+              $('#div_tick').text(timeTick-- +":t");
+          }, 1000);
+      }
+      $(function() {
+        $( "#slider_RW" ).slider({min: 0,max: 50000,value: 10000,
+            slide: function( event, ui ) {
+                  $( "#value_RW" ).text( "$" + ui.value );
+            }});
+        $( "#slider_RB" ).slider();
+        $( "#slider_GW" ).slider();
+        $( "#slider_GB" ).slider();
+        $( "#slider_BW" ).slider();
+        $( "#slider_BW" ).slider();
+        startTicker();
+        //$('.saveFileCheckbox').prop('checked', true);
+        $('#saveFileCheckbox').change(function () {
+          if($('#saveFileCheckbox').is(':checked')){
+            //console.log('save file true');
+            socket.emit('saveFile', { saveFile: 'true' });
+          }else{
+            //console.log('save file false');
+            socket.emit('saveFile', { saveFile: 'false' });
+          }
+        });
+        var socket = io();
+        var totalPoints = 1000;
+        var Raw=[];
+        var dataToPlot=new Array(8);
+        var dataToPlotLabel =new Array(8);
+        for (var j=0;j<8;j++){
+          dataToPlot[j] = new Array();
+          dataToPlotLabel[j]="";
+        }
+        var i =0;
+        socket.on('serverStartTicker', function (interval) {
+          //console.log(interval.logInterval);
+          timeTick = interval.logInterval /1000;
+        });   
+        socket.on('new_data', function (data) {
+          now = ((new Date()).getTime());
+          var index = 0;
+          RAW[0]=data.RAW_R;
+          RAW[1]=data.RAW_G;
+          RAW[2]=data.RAW_B;
+          var i;
+          for (i=0; i<3; i++) {
+            RGB2[i] = Math.floor(((RAW[i] - fBlack[i]) * 255.0 )/(fWhite[i] - fBlack[i]) );
+            if (RGB2[i] < 0) RGB2[i]=0;
+            if (RGB2[i] > 255) RGB2[i]=255;
+          };
+          $('#div_an0').text("R:"+data.RAW_R);
+          $('#div_an1').text("G:"+data.RAW_G);
+          $('#div_an2').text("B:"+data.RAW_B);
+          $('#div_R').text("R:"+RGB2[0]);
+          $('#div_G').text("G:"+RGB2[1]);
+          $('#div_B').text("B:"+RGB2[2]);
+          $('#div_RGB').css('background-color','rgb(' + RGB2[0] + ',' + RGB2[1] + ',' + RGB2[2] + ')');
+          update();
+          //console.log(d0);
+          socket.emit('my other event', { my: 'client do server' });
+        });
+        function update() {
+          var d;
+            d=[
+              { data: dataToPlot[2], label:dataToPlotLabel[2]},
+              { data: dataToPlot[3], label:dataToPlotLabel[3]},
+              { data: dataToPlot[4], label:dataToPlotLabel[4]},
+            ];
+          plot = $.plot("#flot1", d , {
+            series: {
+              lines: {
+                lineWidth: 1,
+                shadowSize: 0,
+              },
+              shadowSize: 0, // Drawing is faster without shadows
+            },
+            colors: ["#edc240","#2B65EC", "#B2912F", "#4da74d", "#9440ed", "#cb4b4b", "#aaaaff", "#ff6666"],
+            xaxes: [{  
+                      mode: "time",
+                      timeformat: "%H:%M:%S",
+                      timezone: "browser",
+                      show: true,
+                      //rotateTicks: 135,
+            }],
+            yaxes: [  { position: "left" , min: 0, max: 1024 }, 
+                      { position: "right", min: 0, max: 100,
+                       ticks:[15,20,25,30,50] 
+                     } 
+                  ],
+            grid: {
+              markings: [
+                { color: "#fcc", lineWidth: 1, yaxis: { from: 20 *1024/100, to: 25 *1024/100}  },
+              ]
+            }
+          });
+          plot.draw();
+
+
+        }
+      });
+
+
+  body
+    .container
+      .row.clearfix
+        .col-md-12.column
+          nav.navbar.navbar-default(role='navigation')
+            .navbar-header
+              button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+                span.sr-only Toggle navigation
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+              |  
+              a.navbar-brand(href='#') PHT
+            #bs-example-navbar-collapse-1.collapse.navbar-collapse
+              ul.nav.navbar-nav
+                li.active
+                  a(href='#') Link
+                li
+                  a(href='#') Link
+                li.dropdown
+                  a.dropdown-toggle(href='#', data-toggle='dropdown')
+                    | Dropdown
+                    strong.caret
+                  ul.dropdown-menu
+                    li
+                      a(href='#') Action
+                    li
+                      a(href='#') Another action
+                    li
+                      a(href='#') Something else here
+                    li.divider
+                    li
+                      a(href='#') Separated link
+                    li.divider
+                    li
+                      a(href='#') One more separated link
+              form.navbar-form.navbar-left(role='search')
+                .form-group
+                  input.form-control(type='text')
+                |  
+                button.btn.btn-default(type='submit') Submit
+              ul.nav.navbar-nav.navbar-right
+                li
+                  a(href='#') Link
+                li.dropdown
+                  a.dropdown-toggle(href='#', data-toggle='dropdown')
+                    | Dropdown
+                    strong.caret
+                  ul.dropdown-menu
+                    li
+                      a(href='#') Action
+                    li
+                      a(href='#') Another action
+                    li
+                      a(href='#') Something else here
+                    li.divider
+                    li
+                      a(href='#') Separated link
+      .row.clearfix
+        .col-md-10.column
+          h3
+            | Color Sensor
+          p
+          #slider_RW #value_RW 000
+          #slider_RB
+          #slider_GW
+          #slider_GB
+          #slider_BW
+          #slider_BB
+          #flot1.demo-flot(style="width:800px;height:400px")
+          #footer
+          h2
+            | Instruções
+          ul
+            li 
+             | Conectar os sensores às portas analógicas A0-A5
+            li 
+             | Conectar o pHmetro na porta A5
+
+        .col-md-2.column
+          #div_tick.analogLabel.colorTick :t
+          #div_an0.analogLabel.colorA0(style="color:#FF0000") R
+          #div_an1.analogLabel.colorA1(style="color:#00FF00") G
+          #div_an2.analogLabel.colorA2(style="color:#0000FF") B
+          #div_R.analogLabel.colorA3(style="color:#FF0000") R
+          #div_G.analogLabel.colorA4(style="color:#00FF00") G
+          #div_B.analogLabel.colorA5(style="color:#0000FF") B
+          #div_RGB.analogLabel(style="background-color:#c0c0c0") RGB
+
+
+          //span.label.label-default Label
+          //|  
+          //span.label.label-default Label
+          form(role='form')
+            .checkbox
+              label
+                input#saveFileCheckbox(type='checkbox')
+                |  Save file

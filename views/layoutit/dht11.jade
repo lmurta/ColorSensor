@@ -1,0 +1,382 @@
+doctype html(lang='en')
+head
+    meta(charset='utf-8')
+    title PHT Arduinos Sensors
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(name='description', content='')
+    meta(name='author', content='')
+    // link rel="stylesheet/less" href="less/bootstrap.less" type="text/css" /
+    // link rel="stylesheet/less" href="less/responsive.less" type="text/css" /
+    // script src="javascripts/less-1.3.3.min.js"></script
+    // append ‘#!watch’ to the browser URL, then refresh the page.
+    link(href='stylesheets/bootstrap.min.css', rel='stylesheet')
+    link(href='stylesheets/style.css', rel='stylesheet')
+    // HTML5 shim, for IE6-8 support of HTML5 elements
+    //if lt IE 9
+      script(src='javascripts/html5shiv.js')
+    // Fav and touch icons
+    link(rel='apple-touch-icon-precomposed', sizes='144x144', href='img/apple-touch-icon-144-precomposed.png')
+    link(rel='apple-touch-icon-precomposed', sizes='114x114', href='img/apple-touch-icon-114-precomposed.png')
+    link(rel='apple-touch-icon-precomposed', sizes='72x72', href='img/apple-touch-icon-72-precomposed.png')
+    link(rel='apple-touch-icon-precomposed', href='img/apple-touch-icon-57-precomposed.png')
+    link(rel='shortcut icon', href='img/favicon.png')
+
+    script(type='text/javascript', src='/socket.io/socket.io.js')
+    script(type='text/javascript', src='javascripts/jquery.min.js')
+    script(type='text/javascript', src='javascripts/bootstrap.min.js')
+    script(type='text/javascript', src='javascripts/scripts.js')
+    script(type='text/javascript', src='javascripts/jquery.flot.min.js')
+    script(type='text/javascript', src='javascripts/jquery.flot.time.min.js')
+    //script(type='text/javascript', src='javascripts/jquery.flot.axislabels.js')
+    //script(type='text/javascript', src='javascripts/jquery.flot.tickrotor.js')
+
+    script(type='text/javascript').
+      var arduinoPort, arduinoVersion;
+      var now;
+      var timeTick =0;
+      function toggle(button)      {
+       if(document.getElementById("buttonToggle").value=="OFF"){
+        socket.emit('button update event', { status: 'OFF' });
+       }
+       else if(document.getElementById("buttonToggle").value=="ON"){
+        socket.emit('button update event', { status: 'ON' });
+       }
+      }
+      function startTicker() {
+          setInterval(function () {
+              $('#div_tick').text(timeTick-- +":t");
+          }, 1000);
+      }
+      $(function() {
+        startTicker();
+        //$('.saveFileCheckbox').prop('checked', true);
+        $('#saveFileCheckbox').change(function () {
+          if($('#saveFileCheckbox').is(':checked')){
+            //console.log('save file true');
+            socket.emit('saveFile', { saveFile: 'true' });
+          }else{
+            //console.log('save file false');
+            socket.emit('saveFile', { saveFile: 'false' });
+          }
+        });
+        var socket = io();
+        var totalPoints = 1000;
+        var H,T,A0, A1, A2,A3, A4, A5;
+        var dH=[],dT=[], d0=[], d1=[], d2=[], d3=[], d4=[], d5=[];
+  
+        var dataToPlot=new Array(8);
+        var dataToPlotLabel =new Array(8);
+        for (var j=0;j<8;j++){
+          dataToPlot[j] = new Array();
+          dataToPlotLabel[j]="";
+        }
+  
+        var data_CO2        = new Array(4);
+        var data_CO2_Label  = new Array(4);
+        for (var j=0;j<4;j++){
+          data_CO2[j] = new Array();
+          data_CO2_Label[j]="";
+        }
+        var data_MQ2        = new Array(7);
+        var data_MQ2_Label  = new Array(7);
+        for (var j=0;j<7;j++){
+          data_MQ2[j] = new Array();
+          data_MQ2_Label[j]="";
+        }    
+        var data_MQ4        = new Array(7);
+        var data_MQ4_Label  = new Array(7);
+        for (var j=0;j<7;j++){
+          data_MQ4[j] = new Array();
+          data_MQ4_Label[j]="";
+        }     
+        var i =0;
+        socket.on('serverStartTicker', function (interval) {
+          //console.log(interval.logInterval);
+          timeTick = interval.logInterval /1000;
+        });   
+        socket.on('new_CO2_data', function (data) {
+          now = ((new Date()).getTime());
+          var index = 0;
+          for(var data_key in data){
+            if(data_CO2[index].length>totalPoints){
+              data_CO2[index] = data_CO2[index].slice(0-totalPoints);
+            }
+            data_CO2[index].push([now,data[data_key]]);
+            data_CO2_Label[index] = data_key;
+            index++;
+          }
+          update();
+          //console.log(d0);
+        });
+        socket.on('new_MQ2_data', function (data) {
+          now = ((new Date()).getTime());
+          var index = 0;
+          for(var data_key in data){
+            if(data_MQ2[index].length>totalPoints){
+              data_MQ2[index] = data_MQ2[index].slice(0-totalPoints);
+            }
+            data_MQ2[index].push([now,data[data_key]]);
+            data_MQ2_Label[index] = data_key;
+            index++;
+          }
+          update();
+          //console.log(d0);
+        });
+        socket.on('new_MQ4_data', function (data) {
+          now = ((new Date()).getTime());
+          var index = 0;
+          for(var data_key in data){
+            if(data_MQ4[index].length>totalPoints){
+              data_MQ4[index] = data_MQ4[index].slice(0-totalPoints);
+            }
+            data_MQ4[index].push([now,data[data_key]]);
+            data_MQ4_Label[index] = data_key;
+            index++;
+          }
+          update();
+          //console.log(d0);
+        });
+        socket.on('new_data', function (data) {
+          now = ((new Date()).getTime());
+          var index = 0;
+          for(var data_key in data){
+            console.log(data_key +"="+ data[data_key]);
+            if(dataToPlot[index].length>totalPoints){
+              dataToPlot[index] = dataToPlot[index].slice(0-totalPoints);
+            }
+            dataToPlot[index].push([now,data[data_key]]);
+            dataToPlotLabel[index] = data_key;
+            index++;
+          }
+          $('#div_H').text(data.H +":HR");
+          $('#div_T').text(data.T +"°C");
+          $('#div_an0').text(data.MG811 +":"+dataToPlotLabel[2]);
+          $('#div_an1').text(data.MQ2 +":"+dataToPlotLabel[3]);
+          $('#div_an4').text(data.MQ4 +":"+dataToPlotLabel[4]);
+          update();
+          //console.log(d0);
+          socket.emit('my other event', { my: 'client do server' });
+        });
+        function update() {
+          var d;
+            d=[
+              { data: dataToPlot[2], label:dataToPlotLabel[2]},
+              { data: dataToPlot[3], label:dataToPlotLabel[3]},
+              { data: dataToPlot[4], label:dataToPlotLabel[4]},
+              { data: dataToPlot[5], label:dataToPlotLabel[5]},
+              { data: dataToPlot[6], label:dataToPlotLabel[6]},
+              { data: dataToPlot[7], label:dataToPlotLabel[7]},
+              { data: dataToPlot[0], label:dataToPlotLabel[0], yaxis:2, lineWidth: 4,lines: { show: true },points: { show: true }},
+              { data: dataToPlot[1], label:dataToPlotLabel[1], yaxis:2, lineWidth: 2,lines: { show: true },points: { show: true }}
+            ];
+          plot = $.plot("#flot1", d , {
+            series: {
+              lines: {
+                lineWidth: 1,
+                shadowSize: 0,
+              },
+              shadowSize: 0, // Drawing is faster without shadows
+            },
+            colors: ["#edc240","#2B65EC", "#B2912F", "#4da74d", "#9440ed", "#cb4b4b", "#aaaaff", "#ff6666"],
+            xaxes: [{  
+                      mode: "time",
+                      timeformat: "%H:%M:%S",
+                      timezone: "browser",
+                      show: true,
+                      //rotateTicks: 135,
+            }],
+            yaxes: [  { position: "left" , min: 0, max: 1024 }, 
+                      { position: "right", min: 0, max: 100,
+                       ticks:[15,20,25,30,50] 
+                     } 
+                  ],
+            grid: {
+              markings: [
+                { color: "#fcc", lineWidth: 1, yaxis: { from: 20 *1024/100, to: 25 *1024/100}  },
+              ]
+            }
+          });
+          plot.draw();
+          d_CO2=[
+              { data: data_CO2[0], label:data_CO2_Label[0],  lineWidth: 4,lines: { show: true },points: { show: false }},
+            ];
+          plot2 = $.plot("#flot2", d_CO2 , {
+            series: {
+              lines: {
+                lineWidth: 1,
+                shadowSize: 0,
+              },
+              shadowSize: 0, // Drawing is faster without shadows
+            },
+            colors: ["#edc240","#2B65EC", "#B2912F", "#4da74d", "#9440ed", "#cb4b4b", "#aaaaff", "#ff6666"],
+            xaxes: [{  
+                      mode: "time",
+                      timeformat: "%H:%M:%S",
+                      timezone: "browser",
+                      show: true,
+                      //rotateTicks: 135,
+            }],
+            yaxes: [  { position: "left" , min: 0, max: 10000 }, 
+                  ],
+          });
+          plot2.draw();
+          d_MQ2=[
+              { data: data_MQ2[0], label:data_MQ2_Label[0],  lineWidth: 4,lines: { show: true },points: { show: true }},
+              { data: data_MQ2[1], label:data_MQ2_Label[1],  lineWidth: 4,lines: { show: true },points: { show: false }},
+              { data: data_MQ2[2], label:data_MQ2_Label[2],  lineWidth: 4,lines: { show: true },points: { show: false }},                
+              { data: data_MQ2[3], label:data_MQ2_Label[3],  lineWidth: 4,lines: { show: true },points: { show: false }},                
+              { data: data_MQ2[4], label:data_MQ2_Label[4],  lineWidth: 4,lines: { show: true },points: { show: false }},                
+              { data: data_MQ2[5], label:data_MQ2_Label[5],  lineWidth: 4,lines: { show: true },points: { show: false }},                
+              { data: data_MQ2[6], label:data_MQ2_Label[6],  lineWidth: 4,lines: { show: true },points: { show: false }},                
+            ];
+          plot3 = $.plot("#flot3", d_MQ2 , {
+            series: {
+              lines: {
+                lineWidth: 1,
+                shadowSize: 0,
+              },
+              shadowSize: 0, // Drawing is faster without shadows
+            },
+            colors: ["#edc240","#2B65EC", "#B2912F", "#4da74d", "#9440ed", "#cb4b4b", "#aaaaff", "#ff6666"],
+            xaxes: [{  
+                      mode: "time",
+                      timeformat: "%H:%M:%S",
+                      timezone: "browser",
+                      show: true,
+                      //rotateTicks: 135,
+            }],
+            yaxes: [  { position: "left" , min: 0, max: 10000 }, 
+                  ],
+          });
+          plot3.draw();
+          d_MQ4=[
+              { data: data_MQ4[0], label:data_MQ4_Label[0],  lineWidth: 4,lines: { show: true },points: { show: false }},
+              { data: data_MQ4[1], label:data_MQ4_Label[1],  lineWidth: 4,lines: { show: true },points: { show: false }},
+              { data: data_MQ4[2], label:data_MQ4_Label[2],  lineWidth: 4,lines: { show: true },points: { show: false }},                
+              { data: data_MQ4[3], label:data_MQ4_Label[3],  lineWidth: 4,lines: { show: true },points: { show: false }},                
+              { data: data_MQ4[4], label:data_MQ4_Label[4],  lineWidth: 4,lines: { show: true },points: { show: true }},                
+              { data: data_MQ4[5], label:data_MQ4_Label[5],  lineWidth: 4,lines: { show: true },points: { show: false }},                
+              { data: data_MQ4[6], label:data_MQ4_Label[6],  lineWidth: 4,lines: { show: true },points: { show: false }},                
+            ];
+          plot4 = $.plot("#flot4", d_MQ4 , {
+            series: {
+              lines: {
+                lineWidth: 1,
+                shadowSize: 0,
+              },
+              shadowSize: 0, // Drawing is faster without shadows
+            },
+            colors: ["#edc240","#2B65EC", "#B2912F", "#4da74d", "#9440ed", "#cb4b4b", "#aaaaff", "#ff6666"],
+            xaxes: [{  
+                      mode: "time",
+                      timeformat: "%H:%M:%S",
+                      timezone: "browser",
+                      show: true,
+                      //rotateTicks: 135,
+            }],
+            yaxes: [  { position: "left" , min: 0, max: 10000 }, 
+                  ],
+          });
+          plot4.draw();
+
+
+
+        }
+      });
+
+
+  body
+    .container
+      .row.clearfix
+        .col-md-12.column
+          nav.navbar.navbar-default(role='navigation')
+            .navbar-header
+              button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+                span.sr-only Toggle navigation
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+              |  
+              a.navbar-brand(href='#') PHT
+            #bs-example-navbar-collapse-1.collapse.navbar-collapse
+              ul.nav.navbar-nav
+                li.active
+                  a(href='#') Link
+                li
+                  a(href='#') Link
+                li.dropdown
+                  a.dropdown-toggle(href='#', data-toggle='dropdown')
+                    | Dropdown
+                    strong.caret
+                  ul.dropdown-menu
+                    li
+                      a(href='#') Action
+                    li
+                      a(href='#') Another action
+                    li
+                      a(href='#') Something else here
+                    li.divider
+                    li
+                      a(href='#') Separated link
+                    li.divider
+                    li
+                      a(href='#') One more separated link
+              form.navbar-form.navbar-left(role='search')
+                .form-group
+                  input.form-control(type='text')
+                |  
+                button.btn.btn-default(type='submit') Submit
+              ul.nav.navbar-nav.navbar-right
+                li
+                  a(href='#') Link
+                li.dropdown
+                  a.dropdown-toggle(href='#', data-toggle='dropdown')
+                    | Dropdown
+                    strong.caret
+                  ul.dropdown-menu
+                    li
+                      a(href='#') Action
+                    li
+                      a(href='#') Another action
+                    li
+                      a(href='#') Something else here
+                    li.divider
+                    li
+                      a(href='#') Separated link
+      .row.clearfix
+        .col-md-10.column
+          h3
+            | Sensores do Arduino
+          p
+          #flot1.demo-flot(style="width:800px;height:400px")
+          #footer
+          #plotly
+          #flot2.demo-flot(style="width:800px;height:400px")
+          #flot3.demo-flot(style="width:800px;height:400px")
+          #flot4.demo-flot(style="width:800px;height:400px")
+          h2
+            | Instruções
+          ul
+            li 
+             | Conectar os sensores às portas analógicas A0-A5
+            li 
+             | Conectar o pHmetro na porta A5
+
+        .col-md-2.column
+          #div_tick.analogLabel.colorTick :t
+          #div_an0.analogLabel.colorA0 A0
+          #div_an1.analogLabel.colorA1 A1
+          #div_an2.analogLabel.colorA2 A2
+          #div_an3.analogLabel.colorA3 A3
+          #div_an4.analogLabel.colorA4 A4
+          #div_an5.analogLabel.colorA5 A5
+          #div_H.analogLabel.colorH H
+          #div_T.analogLabel.colorT T
+          //span.label.label-default Label
+          //|  
+          //span.label.label-default Label
+          form(role='form')
+            .checkbox
+              label
+                input#saveFileCheckbox(type='checkbox')
+                |  Save file

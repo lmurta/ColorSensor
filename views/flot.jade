@@ -1,0 +1,21 @@
+extends layout
+block extra_css
+	link(href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css', rel='stylesheet')
+block extra_js
+	// if lte IE 8
+		script(src='http://people.iola.dk/olau/flot/excanvas.min.js')
+	script(src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js')
+	script(src='/javascripts/jquery.flot.js')
+	script(src='/javascripts/main.js')
+block content
+	h1= title
+	p Monitoring #{what}
+
+	p Update Interval 
+		span#update_int_lbl
+
+	div#update_int
+
+	div#legend
+	div#testflot
+		|loading data

@@ -1,0 +1,420 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'install', '-d' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.38
+4 verbose node symlink /usr/bin/node
+5 verbose readDependencies using package.json deps
+6 verbose install where, deps [ '/home/luciano/FixedHome/gitProjects/ColorSensor',
+6 verbose install   [ 'body-parser',
+6 verbose install     'cookie-parser',
+6 verbose install     'date-format',
+6 verbose install     'debug',
+6 verbose install     'express',
+6 verbose install     'jade',
+6 verbose install     'morgan',
+6 verbose install     'serve-favicon',
+6 verbose install     'socket.io',
+6 verbose install     'plotly',
+6 verbose install     'terminal-kit',
+6 verbose install     'serialport' ] ]
+7 info preinstall ColorSensor@0.0.0
+8 verbose readDependencies using package.json deps
+9 verbose already installed skipping express@~4.11.1 /home/luciano/FixedHome/gitProjects/ColorSensor
+10 verbose cache add [ 'jade@latest', null ]
+11 verbose cache add name=undefined spec="jade@latest" args=["jade@latest",null]
+12 verbose parsed url { protocol: null,
+12 verbose parsed url   slashes: null,
+12 verbose parsed url   auth: null,
+12 verbose parsed url   host: null,
+12 verbose parsed url   port: null,
+12 verbose parsed url   hostname: null,
+12 verbose parsed url   hash: null,
+12 verbose parsed url   search: null,
+12 verbose parsed url   query: null,
+12 verbose parsed url   pathname: 'jade@latest',
+12 verbose parsed url   path: 'jade@latest',
+12 verbose parsed url   href: 'jade@latest' }
+13 verbose already installed skipping morgan@~1.5.1 /home/luciano/FixedHome/gitProjects/ColorSensor
+14 verbose already installed skipping serve-favicon@~2.2.0 /home/luciano/FixedHome/gitProjects/ColorSensor
+15 verbose cache add name="jade" spec="latest" args=["jade","latest"]
+16 verbose parsed url { protocol: null,
+16 verbose parsed url   slashes: null,
+16 verbose parsed url   auth: null,
+16 verbose parsed url   host: null,
+16 verbose parsed url   port: null,
+16 verbose parsed url   hostname: null,
+16 verbose parsed url   hash: null,
+16 verbose parsed url   search: null,
+16 verbose parsed url   query: null,
+16 verbose parsed url   pathname: 'latest',
+16 verbose parsed url   path: 'latest',
+16 verbose parsed url   href: 'latest' }
+17 verbose addNamed [ 'jade', 'latest' ]
+18 verbose addNamed [ null, null ]
+19 verbose cache add [ 'socket.io@latest', null ]
+20 verbose cache add name=undefined spec="socket.io@latest" args=["socket.io@latest",null]
+21 verbose parsed url { protocol: null,
+21 verbose parsed url   slashes: null,
+21 verbose parsed url   auth: null,
+21 verbose parsed url   host: null,
+21 verbose parsed url   port: null,
+21 verbose parsed url   hostname: null,
+21 verbose parsed url   hash: null,
+21 verbose parsed url   search: null,
+21 verbose parsed url   query: null,
+21 verbose parsed url   pathname: 'socket.io@latest',
+21 verbose parsed url   path: 'socket.io@latest',
+21 verbose parsed url   href: 'socket.io@latest' }
+22 silly lockFile 50c7aeb0-jade-latest jade@latest
+23 verbose lock jade@latest /home/luciano/.npm/50c7aeb0-jade-latest.lock
+24 verbose cache add name="socket.io" spec="latest" args=["socket.io","latest"]
+25 verbose parsed url { protocol: null,
+25 verbose parsed url   slashes: null,
+25 verbose parsed url   auth: null,
+25 verbose parsed url   host: null,
+25 verbose parsed url   port: null,
+25 verbose parsed url   hostname: null,
+25 verbose parsed url   hash: null,
+25 verbose parsed url   search: null,
+25 verbose parsed url   query: null,
+25 verbose parsed url   pathname: 'latest',
+25 verbose parsed url   path: 'latest',
+25 verbose parsed url   href: 'latest' }
+26 verbose addNamed [ 'socket.io', 'latest' ]
+27 verbose addNamed [ null, null ]
+28 silly lockFile d01f6c55-socket-io-latest socket.io@latest
+29 verbose lock socket.io@latest /home/luciano/.npm/d01f6c55-socket-io-latest.lock
+30 verbose cache add [ 'plotly@latest', null ]
+31 verbose cache add name=undefined spec="plotly@latest" args=["plotly@latest",null]
+32 verbose parsed url { protocol: null,
+32 verbose parsed url   slashes: null,
+32 verbose parsed url   auth: null,
+32 verbose parsed url   host: null,
+32 verbose parsed url   port: null,
+32 verbose parsed url   hostname: null,
+32 verbose parsed url   hash: null,
+32 verbose parsed url   search: null,
+32 verbose parsed url   query: null,
+32 verbose parsed url   pathname: 'plotly@latest',
+32 verbose parsed url   path: 'plotly@latest',
+32 verbose parsed url   href: 'plotly@latest' }
+33 verbose cache add name="plotly" spec="latest" args=["plotly","latest"]
+34 verbose parsed url { protocol: null,
+34 verbose parsed url   slashes: null,
+34 verbose parsed url   auth: null,
+34 verbose parsed url   host: null,
+34 verbose parsed url   port: null,
+34 verbose parsed url   hostname: null,
+34 verbose parsed url   hash: null,
+34 verbose parsed url   search: null,
+34 verbose parsed url   query: null,
+34 verbose parsed url   pathname: 'latest',
+34 verbose parsed url   path: 'latest',
+34 verbose parsed url   href: 'latest' }
+35 verbose addNamed [ 'plotly', 'latest' ]
+36 verbose addNamed [ null, null ]
+37 silly lockFile 0fcc2cdf-plotly-latest plotly@latest
+38 verbose lock plotly@latest /home/luciano/.npm/0fcc2cdf-plotly-latest.lock
+39 verbose cache add [ 'terminal-kit@latest', null ]
+40 verbose cache add name=undefined spec="terminal-kit@latest" args=["terminal-kit@latest",null]
+41 verbose parsed url { protocol: null,
+41 verbose parsed url   slashes: null,
+41 verbose parsed url   auth: null,
+41 verbose parsed url   host: null,
+41 verbose parsed url   port: null,
+41 verbose parsed url   hostname: null,
+41 verbose parsed url   hash: null,
+41 verbose parsed url   search: null,
+41 verbose parsed url   query: null,
+41 verbose parsed url   pathname: 'terminal-kit@latest',
+41 verbose parsed url   path: 'terminal-kit@latest',
+41 verbose parsed url   href: 'terminal-kit@latest' }
+42 info addNameTag [ 'jade', 'latest' ]
+43 info addNameTag [ 'socket.io', 'latest' ]
+44 verbose cache add name="terminal-kit" spec="latest" args=["terminal-kit","latest"]
+45 verbose parsed url { protocol: null,
+45 verbose parsed url   slashes: null,
+45 verbose parsed url   auth: null,
+45 verbose parsed url   host: null,
+45 verbose parsed url   port: null,
+45 verbose parsed url   hostname: null,
+45 verbose parsed url   hash: null,
+45 verbose parsed url   search: null,
+45 verbose parsed url   query: null,
+45 verbose parsed url   pathname: 'latest',
+45 verbose parsed url   path: 'latest',
+45 verbose parsed url   href: 'latest' }
+46 verbose addNamed [ 'terminal-kit', 'latest' ]
+47 verbose addNamed [ null, null ]
+48 silly lockFile c3ee05de-terminal-kit-latest terminal-kit@latest
+49 verbose lock terminal-kit@latest /home/luciano/.npm/c3ee05de-terminal-kit-latest.lock
+50 verbose cache add [ 'serialport@latest', null ]
+51 verbose cache add name=undefined spec="serialport@latest" args=["serialport@latest",null]
+52 verbose parsed url { protocol: null,
+52 verbose parsed url   slashes: null,
+52 verbose parsed url   auth: null,
+52 verbose parsed url   host: null,
+52 verbose parsed url   port: null,
+52 verbose parsed url   hostname: null,
+52 verbose parsed url   hash: null,
+52 verbose parsed url   search: null,
+52 verbose parsed url   query: null,
+52 verbose parsed url   pathname: 'serialport@latest',
+52 verbose parsed url   path: 'serialport@latest',
+52 verbose parsed url   href: 'serialport@latest' }
+53 info addNameTag [ 'plotly', 'latest' ]
+54 verbose cache add name="serialport" spec="latest" args=["serialport","latest"]
+55 verbose parsed url { protocol: null,
+55 verbose parsed url   slashes: null,
+55 verbose parsed url   auth: null,
+55 verbose parsed url   host: null,
+55 verbose parsed url   port: null,
+55 verbose parsed url   hostname: null,
+55 verbose parsed url   hash: null,
+55 verbose parsed url   search: null,
+55 verbose parsed url   query: null,
+55 verbose parsed url   pathname: 'latest',
+55 verbose parsed url   path: 'latest',
+55 verbose parsed url   href: 'latest' }
+56 verbose addNamed [ 'serialport', 'latest' ]
+57 verbose addNamed [ null, null ]
+58 silly lockFile 619c49e1-serialport-latest serialport@latest
+59 verbose lock serialport@latest /home/luciano/.npm/619c49e1-serialport-latest.lock
+60 verbose already installed skipping body-parser@~1.10.2 /home/luciano/FixedHome/gitProjects/ColorSensor
+61 verbose already installed skipping cookie-parser@~1.3.3 /home/luciano/FixedHome/gitProjects/ColorSensor
+62 verbose already installed skipping date-format@0.0.2 /home/luciano/FixedHome/gitProjects/ColorSensor
+63 info addNameTag [ 'terminal-kit', 'latest' ]
+64 verbose already installed skipping debug@~2.1.1 /home/luciano/FixedHome/gitProjects/ColorSensor
+65 info addNameTag [ 'serialport', 'latest' ]
+66 verbose request where is /jade
+67 verbose request registry https://registry.npmjs.org/
+68 verbose request id 7eb37b4712fc3a44
+69 verbose url raw /jade
+70 verbose url resolving [ 'https://registry.npmjs.org/', './jade' ]
+71 verbose url resolved https://registry.npmjs.org/jade
+72 verbose request where is https://registry.npmjs.org/jade
+73 info trying registry request attempt 1 at 12:52:53
+74 verbose etag "WKOW7OOAWPIBR54HXCYV074J"
+75 http GET https://registry.npmjs.org/jade
+76 verbose request where is /socket.io
+77 verbose request registry https://registry.npmjs.org/
+78 verbose url raw /socket.io
+79 verbose url resolving [ 'https://registry.npmjs.org/', './socket.io' ]
+80 verbose url resolved https://registry.npmjs.org/socket.io
+81 verbose request where is https://registry.npmjs.org/socket.io
+82 info trying registry request attempt 1 at 12:52:53
+83 verbose etag "9F3Z5K934QUYPKEOJO8LEGSMJ"
+84 http GET https://registry.npmjs.org/socket.io
+85 verbose request where is /plotly
+86 verbose request registry https://registry.npmjs.org/
+87 verbose url raw /plotly
+88 verbose url resolving [ 'https://registry.npmjs.org/', './plotly' ]
+89 verbose url resolved https://registry.npmjs.org/plotly
+90 verbose request where is https://registry.npmjs.org/plotly
+91 info trying registry request attempt 1 at 12:52:53
+92 verbose etag "6KFZ88D4QUG18P6C26TJA022V"
+93 http GET https://registry.npmjs.org/plotly
+94 verbose request where is /terminal-kit
+95 verbose request registry https://registry.npmjs.org/
+96 verbose url raw /terminal-kit
+97 verbose url resolving [ 'https://registry.npmjs.org/', './terminal-kit' ]
+98 verbose url resolved https://registry.npmjs.org/terminal-kit
+99 verbose request where is https://registry.npmjs.org/terminal-kit
+100 info trying registry request attempt 1 at 12:52:53
+101 verbose etag "5J1MHLS1C17U0FRZF5OS5RDSH"
+102 http GET https://registry.npmjs.org/terminal-kit
+103 verbose request where is /serialport
+104 verbose request registry https://registry.npmjs.org/
+105 verbose url raw /serialport
+106 verbose url resolving [ 'https://registry.npmjs.org/', './serialport' ]
+107 verbose url resolved https://registry.npmjs.org/serialport
+108 verbose request where is https://registry.npmjs.org/serialport
+109 info trying registry request attempt 1 at 12:52:53
+110 verbose etag "BU37PH6M6CHHEG82ZY6H622W0"
+111 http GET https://registry.npmjs.org/serialport
+112 http 304 https://registry.npmjs.org/jade
+113 silly registry.get cb [ 304,
+113 silly registry.get   { date: 'Thu, 11 Jun 2015 15:53:10 GMT',
+113 silly registry.get     via: '1.1 varnish',
+113 silly registry.get     'cache-control': 'max-age=60',
+113 silly registry.get     etag: '"WKOW7OOAWPIBR54HXCYV074J"',
+113 silly registry.get     age: '52',
+113 silly registry.get     connection: 'keep-alive',
+113 silly registry.get     'x-served-by': 'cache-atl6231-ATL',
+113 silly registry.get     'x-cache': 'HIT',
+113 silly registry.get     'x-cache-hits': '2',
+113 silly registry.get     'x-timer': 'S1434037990.694080,VS0,VE0',
+113 silly registry.get     vary: 'Accept' } ]
+114 verbose etag https://registry.npmjs.org/jade from cache
+115 http 304 https://registry.npmjs.org/plotly
+116 silly registry.get cb [ 304,
+116 silly registry.get   { date: 'Thu, 11 Jun 2015 15:53:10 GMT',
+116 silly registry.get     via: '1.1 varnish',
+116 silly registry.get     'cache-control': 'max-age=60',
+116 silly registry.get     etag: '"6KFZ88D4QUG18P6C26TJA022V"',
+116 silly registry.get     age: '53',
+116 silly registry.get     connection: 'keep-alive',
+116 silly registry.get     'x-served-by': 'cache-atl6233-ATL',
+116 silly registry.get     'x-cache': 'HIT',
+116 silly registry.get     'x-cache-hits': '1',
+116 silly registry.get     'x-timer': 'S1434037990.700947,VS0,VE0',
+116 silly registry.get     vary: 'Accept' } ]
+117 verbose etag https://registry.npmjs.org/plotly from cache
+118 verbose addNamed [ 'plotly', '1.0.2' ]
+119 verbose addNamed [ '1.0.2', '1.0.2' ]
+120 silly lockFile 788f8c48-plotly-1-0-2 plotly@1.0.2
+121 verbose lock plotly@1.0.2 /home/luciano/.npm/788f8c48-plotly-1-0-2.lock
+122 verbose addNamed [ 'jade', '1.10.0' ]
+123 verbose addNamed [ '1.10.0', '1.10.0' ]
+124 silly lockFile 9e9744d4-jade-1-10-0 jade@1.10.0
+125 verbose lock jade@1.10.0 /home/luciano/.npm/9e9744d4-jade-1-10-0.lock
+126 http 304 https://registry.npmjs.org/serialport
+127 silly registry.get cb [ 304,
+127 silly registry.get   { date: 'Thu, 11 Jun 2015 15:53:10 GMT',
+127 silly registry.get     via: '1.1 varnish',
+127 silly registry.get     'cache-control': 'max-age=60',
+127 silly registry.get     etag: '"BU37PH6M6CHHEG82ZY6H622W0"',
+127 silly registry.get     age: '53',
+127 silly registry.get     connection: 'keep-alive',
+127 silly registry.get     'x-served-by': 'cache-atl6229-ATL',
+127 silly registry.get     'x-cache': 'HIT',
+127 silly registry.get     'x-cache-hits': '1',
+127 silly registry.get     'x-timer': 'S1434037990.743151,VS0,VE1',
+127 silly registry.get     vary: 'Accept' } ]
+128 verbose etag https://registry.npmjs.org/serialport from cache
+129 silly lockFile 788f8c48-plotly-1-0-2 plotly@1.0.2
+130 silly lockFile 788f8c48-plotly-1-0-2 plotly@1.0.2
+131 silly lockFile 0fcc2cdf-plotly-latest plotly@latest
+132 silly lockFile 0fcc2cdf-plotly-latest plotly@latest
+133 verbose addNamed [ 'serialport', '1.7.4' ]
+134 verbose addNamed [ '1.7.4', '1.7.4' ]
+135 silly lockFile 6035c2b7-serialport-1-7-4 serialport@1.7.4
+136 verbose lock serialport@1.7.4 /home/luciano/.npm/6035c2b7-serialport-1-7-4.lock
+137 silly lockFile 6035c2b7-serialport-1-7-4 serialport@1.7.4
+138 silly lockFile 6035c2b7-serialport-1-7-4 serialport@1.7.4
+139 silly lockFile 619c49e1-serialport-latest serialport@latest
+140 silly lockFile 619c49e1-serialport-latest serialport@latest
+141 silly lockFile 9e9744d4-jade-1-10-0 jade@1.10.0
+142 silly lockFile 9e9744d4-jade-1-10-0 jade@1.10.0
+143 silly lockFile 50c7aeb0-jade-latest jade@latest
+144 silly lockFile 50c7aeb0-jade-latest jade@latest
+145 info already installed plotly@1.0.2
+146 info already installed jade@1.10.0
+147 info already installed serialport@1.7.4
+148 http 304 https://registry.npmjs.org/socket.io
+149 silly registry.get cb [ 304,
+149 silly registry.get   { date: 'Thu, 11 Jun 2015 15:53:10 GMT',
+149 silly registry.get     via: '1.1 varnish',
+149 silly registry.get     'cache-control': 'max-age=60',
+149 silly registry.get     etag: '"9F3Z5K934QUYPKEOJO8LEGSMJ"',
+149 silly registry.get     age: '20',
+149 silly registry.get     connection: 'keep-alive',
+149 silly registry.get     'x-served-by': 'cache-iad2133-IAD',
+149 silly registry.get     'x-cache': 'HIT',
+149 silly registry.get     'x-cache-hits': '1',
+149 silly registry.get     'x-timer': 'S1434037990.792147,VS0,VE0',
+149 silly registry.get     vary: 'Accept' } ]
+150 verbose etag https://registry.npmjs.org/socket.io from cache
+151 verbose addNamed [ 'socket.io', '1.3.5' ]
+152 verbose addNamed [ '1.3.5', '1.3.5' ]
+153 silly lockFile e27f34ff-socket-io-1-3-5 socket.io@1.3.5
+154 verbose lock socket.io@1.3.5 /home/luciano/.npm/e27f34ff-socket-io-1-3-5.lock
+155 silly lockFile e27f34ff-socket-io-1-3-5 socket.io@1.3.5
+156 silly lockFile e27f34ff-socket-io-1-3-5 socket.io@1.3.5
+157 silly lockFile d01f6c55-socket-io-latest socket.io@latest
+158 silly lockFile d01f6c55-socket-io-latest socket.io@latest
+159 info already installed socket.io@1.3.5
+160 http 304 https://registry.npmjs.org/terminal-kit
+161 silly registry.get cb [ 304,
+161 silly registry.get   { date: 'Thu, 11 Jun 2015 15:53:10 GMT',
+161 silly registry.get     via: '1.1 varnish',
+161 silly registry.get     'cache-control': 'max-age=60',
+161 silly registry.get     etag: '"5J1MHLS1C17U0FRZF5OS5RDSH"',
+161 silly registry.get     age: '0',
+161 silly registry.get     connection: 'keep-alive',
+161 silly registry.get     'x-served-by': 'cache-jfk1023-JFK',
+161 silly registry.get     'x-cache': 'MISS',
+161 silly registry.get     'x-cache-hits': '0',
+161 silly registry.get     'x-timer': 'S1434037990.917808,VS0,VE84',
+161 silly registry.get     vary: 'Accept' } ]
+162 verbose etag https://registry.npmjs.org/terminal-kit from cache
+163 verbose addNamed [ 'terminal-kit', '0.13.16' ]
+164 verbose addNamed [ '0.13.16', '0.13.16' ]
+165 silly lockFile d0c5c69a-terminal-kit-0-13-16 terminal-kit@0.13.16
+166 verbose lock terminal-kit@0.13.16 /home/luciano/.npm/d0c5c69a-terminal-kit-0-13-16.lock
+167 silly lockFile d0c5c69a-terminal-kit-0-13-16 terminal-kit@0.13.16
+168 silly lockFile d0c5c69a-terminal-kit-0-13-16 terminal-kit@0.13.16
+169 silly lockFile c3ee05de-terminal-kit-latest terminal-kit@latest
+170 silly lockFile c3ee05de-terminal-kit-latest terminal-kit@latest
+171 info already installed terminal-kit@0.13.16
+172 silly resolved []
+173 info build /home/luciano/FixedHome/gitProjects/ColorSensor
+174 verbose linkStuff [ false, false, false, '/home/luciano/FixedHome/gitProjects' ]
+175 info linkStuff ColorSensor@0.0.0
+176 verbose linkBins ColorSensor@0.0.0
+177 verbose linkMans ColorSensor@0.0.0
+178 verbose rebuildBundles ColorSensor@0.0.0
+179 verbose rebuildBundles [ '.bin',
+179 verbose rebuildBundles   'body-parser',
+179 verbose rebuildBundles   'cookie-parser',
+179 verbose rebuildBundles   'date-format',
+179 verbose rebuildBundles   'debug',
+179 verbose rebuildBundles   'express',
+179 verbose rebuildBundles   'jade',
+179 verbose rebuildBundles   'json-scrape',
+179 verbose rebuildBundles   'morgan',
+179 verbose rebuildBundles   'plotly',
+179 verbose rebuildBundles   'serialport',
+179 verbose rebuildBundles   'serialport2',
+179 verbose rebuildBundles   'serve-favicon',
+179 verbose rebuildBundles   'socket.io',
+179 verbose rebuildBundles   'terminal-kit' ]
+180 verbose rebuild bundle /home/luciano/FixedHome/gitProjects/ColorSensor/node_modules/json-scrape
+181 info build /home/luciano/FixedHome/gitProjects/ColorSensor/node_modules/json-scrape
+182 info preinstall json-scrape@0.0.2
+183 verbose linkStuff [ false,
+183 verbose linkStuff   false,
+183 verbose linkStuff   false,
+183 verbose linkStuff   '/home/luciano/FixedHome/gitProjects/ColorSensor/node_modules' ]
+184 info linkStuff json-scrape@0.0.2
+185 verbose linkBins json-scrape@0.0.2
+186 verbose linkMans json-scrape@0.0.2
+187 verbose rebuildBundles json-scrape@0.0.2
+188 verbose rebuildBundles [ 'jsonparse', 'through' ]
+189 info install json-scrape@0.0.2
+190 info postinstall json-scrape@0.0.2
+191 verbose rebuild bundle /home/luciano/FixedHome/gitProjects/ColorSensor/node_modules/serialport2
+192 info build /home/luciano/FixedHome/gitProjects/ColorSensor/node_modules/serialport2
+193 info preinstall serialport2@0.0.5
+194 verbose linkStuff [ false,
+194 verbose linkStuff   false,
+194 verbose linkStuff   false,
+194 verbose linkStuff   '/home/luciano/FixedHome/gitProjects/ColorSensor/node_modules' ]
+195 info linkStuff serialport2@0.0.5
+196 verbose linkBins serialport2@0.0.5
+197 verbose link bins [ { serialportlist: './bin/serialportList.js',
+197 verbose link bins     serialportterm: './bin/serialportTerminal.js' },
+197 verbose link bins   '/home/luciano/FixedHome/gitProjects/ColorSensor/node_modules/.bin',
+197 verbose link bins   false ]
+198 verbose linkMans serialport2@0.0.5
+199 verbose rebuildBundles serialport2@0.0.5
+200 info install serialport2@0.0.5
+201 verbose unsafe-perm in lifecycle false
+202 info serialport2@0.0.5 Failed to exec install script
+203 error serialport2@0.0.5 install: `node-gyp rebuild`
+203 error Exit status 1
+204 error Failed at the serialport2@0.0.5 install script.
+204 error This is most likely a problem with the serialport2 package,
+204 error not with npm itself.
+204 error Tell the author that this fails on your system:
+204 error     node-gyp rebuild
+204 error You can get their info via:
+204 error     npm owner ls serialport2
+204 error There is likely additional logging output above.
+205 error System Linux 3.13.0-53-generic
+206 error command "/usr/bin/node" "/usr/bin/npm" "install" "-d"
+207 error cwd /home/luciano/FixedHome/gitProjects/ColorSensor
+208 error node -v v0.10.38
+209 error npm -v 1.4.28
+210 error code ELIFECYCLE
+211 verbose exit [ 1, true ]
