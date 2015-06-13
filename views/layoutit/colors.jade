@@ -60,31 +60,7 @@ head
               $('#div_tick').text(timeTick-- +":t");
           }, 1000);
       }
-      function drawColors(){
-        var canvasWide =800;
-        var canvasTall =400;
-        //var unitSize = 16; // width (and height) of one square
-        var unitsWide = 8; // number of squares along x-axis
-        var unitsTall = 120; // number of squares along y-axis
-        var newColor;
-        var blockWide = canvasWide/unitsWide;
-        var blockTall = canvasTall/unitsTall;
-        console.log("blockWide:"+blockWide+" blockTall:"+blockTall);
-        $("#drawing").css({
-            overflow: 'xhidden',
-        });
-        for (  var H=360; H > 0; H-=(360/unitsTall)) {
-          for (var S=100; S > 0; S-=(100/unitsWide)){
-            newColor = one.color('hsl(' + H + ',' + S + ',' + 50 + ')');
-            $('<span class="square"></span>').css({display: 'block',float: 'left',
-                width: blockWide, height:blockTall,'background-color': newColor.css()
-            }).appendTo(drawing);
-          }
-        }
-        //drawing.appendTo($("body"));
-      }
       $(function() {
-        drawColors();
         //alert('Hello, ' + one.color('#650042').lightness(.3).green(.4).hex() + ' world!');
         $( "#slider_RB" ).slider({min: 0,max: 50000,value: fBlack[0],slide: function( event, ui ) {$( "#value_RB" ).text( "RB:" + ui.value );fBlack[0]=ui.value;update(); }});
         $( "#slider_GB" ).slider({min: 0,max: 50000,value: fBlack[1],slide: function( event, ui ) {$( "#value_GB" ).text( "GB:" + ui.value );fBlack[1]=ui.value;update(); }});
@@ -168,7 +144,10 @@ head
           dataToPlot[0].push([now,myColor.hue()]);
           dataToPlotLabel[0] = "HUE";
           var gradiente=0;
-          var gradienteStep =0.1;
+          var gradienteNum = 20;
+          var gradienteStep =gradienteNum / gradienteNum;
+          var gAngle = 360/gradienteNum;
+          var gSat = 75;
           var d;
           d=[
               { data: dataToPlot[0], label:dataToPlotLabel[0]},
@@ -196,16 +175,27 @@ head
                   ],
             grid: {
               markings: [
-                { color: one.color('hsl(' + gradiente*36 + ',' + 100 + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/10, to: (gradiente)/10   }  },
-                { color: one.color('hsl(' + gradiente*36 + ',' + 100 + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/10, to: (gradiente)/10}  },
-                { color: one.color('hsl(' + gradiente*36 + ',' + 100 + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/10, to: (gradiente)/10}  },
-                { color: one.color('hsl(' + gradiente*36 + ',' + 100 + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/10, to: (gradiente)/10}  },
-                { color: one.color('hsl(' + gradiente*36 + ',' + 100 + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/10, to: (gradiente)/10}  },
-                { color: one.color('hsl(' + gradiente*36 + ',' + 100 + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/10, to: (gradiente)/10}  },
-                { color: one.color('hsl(' + gradiente*36 + ',' + 100 + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/10, to: (gradiente)/10}  },
-                { color: one.color('hsl(' + gradiente*36 + ',' + 100 + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/10, to: (gradiente)/10}  },
-                { color: one.color('hsl(' + gradiente*36 + ',' + 100 + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/10, to: (gradiente)/10}  },
-                { color: one.color('hsl(' + gradiente*36 + ',' + 100 + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/10, to: (gradiente)/10}  },
+                { color: one.color('hsl(' + gradiente*gAngle + ',' + gSat + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/gradienteNum, to: (gradiente)/gradienteNum}  },
+                { color: one.color('hsl(' + gradiente*gAngle + ',' + gSat + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/gradienteNum, to: (gradiente)/gradienteNum}  },
+                { color: one.color('hsl(' + gradiente*gAngle + ',' + gSat + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/gradienteNum, to: (gradiente)/gradienteNum}  },
+                { color: one.color('hsl(' + gradiente*gAngle + ',' + gSat + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/gradienteNum, to: (gradiente)/gradienteNum}  },
+                { color: one.color('hsl(' + gradiente*gAngle + ',' + gSat + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/gradienteNum, to: (gradiente)/gradienteNum}  },
+                { color: one.color('hsl(' + gradiente*gAngle + ',' + gSat + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/gradienteNum, to: (gradiente)/gradienteNum}  },
+                { color: one.color('hsl(' + gradiente*gAngle + ',' + gSat + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/gradienteNum, to: (gradiente)/gradienteNum}  },
+                { color: one.color('hsl(' + gradiente*gAngle + ',' + gSat + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/gradienteNum, to: (gradiente)/gradienteNum}  },
+                { color: one.color('hsl(' + gradiente*gAngle + ',' + gSat + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/gradienteNum, to: (gradiente)/gradienteNum}  },
+                { color: one.color('hsl(' + gradiente*gAngle + ',' + gSat + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/gradienteNum, to: (gradiente)/gradienteNum}  },
+                { color: one.color('hsl(' + gradiente*gAngle + ',' + gSat + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/gradienteNum, to: (gradiente)/gradienteNum}  },
+                { color: one.color('hsl(' + gradiente*gAngle + ',' + gSat + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/gradienteNum, to: (gradiente)/gradienteNum}  },
+                { color: one.color('hsl(' + gradiente*gAngle + ',' + gSat + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/gradienteNum, to: (gradiente)/gradienteNum}  },
+                { color: one.color('hsl(' + gradiente*gAngle + ',' + gSat + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/gradienteNum, to: (gradiente)/gradienteNum}  },
+                { color: one.color('hsl(' + gradiente*gAngle + ',' + gSat + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/gradienteNum, to: (gradiente)/gradienteNum}  },
+                { color: one.color('hsl(' + gradiente*gAngle + ',' + gSat + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/gradienteNum, to: (gradiente)/gradienteNum}  },
+                { color: one.color('hsl(' + gradiente*gAngle + ',' + gSat + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/gradienteNum, to: (gradiente)/gradienteNum}  },
+                { color: one.color('hsl(' + gradiente*gAngle + ',' + gSat + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/gradienteNum, to: (gradiente)/gradienteNum}  },
+                { color: one.color('hsl(' + gradiente*gAngle + ',' + gSat + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/gradienteNum, to: (gradiente)/gradienteNum}  },
+                { color: one.color('hsl(' + gradiente*gAngle + ',' + gSat + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/gradienteNum, to: (gradiente)/gradienteNum}  },
+                { color: one.color('hsl(' + gradiente*gAngle + ',' + gSat + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/gradienteNum, to: (gradiente)/gradienteNum}  },
               ]
             }
           });
@@ -299,7 +289,6 @@ head
           #slider_BW
           p
           #flot1.demo-flot(style="width:800px;height:400px")
-          #drawing(style="width:800px;height:400px;background-color:#c0c0c0")
           #footer
           h2
             | Instruções

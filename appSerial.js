@@ -201,9 +201,9 @@ io.sockets.on('connection', function(socket){
 
    setInterval(function(){
     //////////////////////DEBUG
-    new_data["RAW_R"] = Math.random()*100000;
-    new_data["RAW_G"] = Math.random()*100000;
-    new_data["RAW_B"] = Math.random()*100000;
+    new_data["RAW_R"] = 10000 + Math.random()*100000;
+    new_data["RAW_G"] = 10000 + Math.random()*100000;
+    new_data["RAW_B"] = 10000 + Math.random()*100000;
     console.log(new_data);
     //return;
       socket.emit('new_data', new_data);
