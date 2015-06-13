@@ -60,7 +60,31 @@ head
               $('#div_tick').text(timeTick-- +":t");
           }, 1000);
       }
+      function drawColors(){
+        var canvasWide =800;
+        var canvasTall =400;
+        //var unitSize = 16; // width (and height) of one square
+        var unitsWide = 8; // number of squares along x-axis
+        var unitsTall = 120; // number of squares along y-axis
+        var newColor;
+        var blockWide = canvasWide/unitsWide;
+        var blockTall = canvasTall/unitsTall;
+        console.log("blockWide:"+blockWide+" blockTall:"+blockTall);
+        $("#drawing").css({
+            overflow: 'xhidden',
+        });
+        for (  var H=360; H > 0; H-=(360/unitsTall)) {
+          for (var S=100; S > 0; S-=(100/unitsWide)){
+            newColor = one.color('hsl(' + H + ',' + S + ',' + 50 + ')');
+            $('<span class="square"></span>').css({display: 'block',float: 'left',
+                width: blockWide, height:blockTall,'background-color': newColor.css()
+            }).appendTo(drawing);
+          }
+        }
+        //drawing.appendTo($("body"));
+      }
       $(function() {
+        drawColors();
         //alert('Hello, ' + one.color('#650042').lightness(.3).green(.4).hex() + ' world!');
         $( "#slider_RB" ).slider({min: 0,max: 50000,value: fBlack[0],slide: function( event, ui ) {$( "#value_RB" ).text( "RB:" + ui.value );fBlack[0]=ui.value;update(); }});
         $( "#slider_GB" ).slider({min: 0,max: 50000,value: fBlack[1],slide: function( event, ui ) {$( "#value_GB" ).text( "GB:" + ui.value );fBlack[1]=ui.value;update(); }});
@@ -99,8 +123,8 @@ head
         var socket = io();
         var totalPoints = 1000;
         var Raw=[];
-        var dataToPlot=new Array(8);
-        var dataToPlotLabel =new Array(8);
+        var dataToPlot=new Array(1);
+        var dataToPlotLabel =new Array(1);
         for (var j=0;j<8;j++){
           dataToPlot[j] = new Array();
           dataToPlotLabel[j]="";
@@ -116,12 +140,7 @@ head
           RAW[0]=data.RAW_R;
           RAW[1]=data.RAW_G;
           RAW[2]=data.RAW_B;
-          var i;
-          for (i=0; i<3; i++) {
-            RGB2[i] = Math.floor(((RAW[i] - fBlack[i]) * 255.0 )/(fWhite[i] - fBlack[i]) );
-            if (RGB2[i] < 0) RGB2[i]=0;
-            if (RGB2[i] > 255) RGB2[i]=255;
-          };
+          update();
           $('#div_an0').text("R:"+data.RAW_R);
           $('#div_an1').text("G:"+data.RAW_G);
           $('#div_an2').text("B:"+data.RAW_B);
@@ -129,9 +148,8 @@ head
           $('#div_G').text("G:"+RGB2[1]);
           $('#div_B').text("B:"+RGB2[2]);
           $('#div_RGB').css('background-color','rgb(' + RGB2[0] + ',' + RGB2[1] + ',' + RGB2[2] + ')');
-          update();
           //console.log(d0);
-          socket.emit('my other event', { my: 'client do server' });
+          //socket.emit('my other event', { my: 'client do server' });
         });
         function update() {
           var i;
@@ -140,28 +158,30 @@ head
             RGB2[i] += Correction[i];
             if (RGB2[i] < 0) RGB2[i]=0;
             if (RGB2[i] > 255) RGB2[i]=255;
-            myColor = one.color('rgb(' + RGB2[0] + ',' + RGB2[1] + ',' + RGB2[2] + ')');
-            hueColor = myColor.saturation(1).value(1);
-            //huecolor = hueColor.red(0);
-            //$('#div_oneColor').css('background-color','rgb(' + hueColor.red() + ',' + hueColor.green() + ',' + hueColor.blue() + ')');
-            $('#div_oneColor').css('background-color',hueColor.css());
-            $('#div_oneColor').text(myColor.hue()) ;
           };
+          var myColor = one.color('rgb(' + RGB2[0] + ',' + RGB2[1] + ',' + RGB2[2] + ')');
+          //hueColor = myColor.saturation(1).value(1);
+          //huecolor = hueColor.red(0);
+          //$('#div_oneColor').css('background-color','rgb(' + hueColor.red() + ',' + hueColor.green() + ',' + hueColor.blue() + ')');
+          $('#div_oneColor').css('background-color',myColor.css());
+          $('#div_oneColor').text(myColor.hue()) ;
+          dataToPlot[0].push([now,myColor.hue()]);
+          dataToPlotLabel[0] = "HUE";
+          var gradiente=0;
+          var gradienteStep =0.1;
           var d;
-            d=[
-              { data: dataToPlot[2], label:dataToPlotLabel[2]},
-              { data: dataToPlot[3], label:dataToPlotLabel[3]},
-              { data: dataToPlot[4], label:dataToPlotLabel[4]},
+          d=[
+              { data: dataToPlot[0], label:dataToPlotLabel[0]},
             ];
           plot = $.plot("#flot1", d , {
             series: {
               lines: {
-                lineWidth: 1,
+                lineWidth: 2,
                 shadowSize: 0,
               },
               shadowSize: 0, // Drawing is faster without shadows
             },
-            colors: ["#edc240","#2B65EC", "#B2912F", "#4da74d", "#9440ed", "#cb4b4b", "#aaaaff", "#ff6666"],
+            colors: ["#000","#2B65EC", "#B2912F", "#4da74d", "#9440ed", "#cb4b4b", "#aaaaff", "#ff6666"],
             xaxes: [{  
                       mode: "time",
                       timeformat: "%H:%M:%S",
@@ -169,14 +189,23 @@ head
                       show: true,
                       //rotateTicks: 135,
             }],
-            yaxes: [  { position: "left" , min: 0, max: 1024 }, 
-                      { position: "right", min: 0, max: 100,
-                       ticks:[15,20,25,30,50] 
+            yaxes: [  { position: "left" , min: 0, max: 1 }, 
+                      { position: "right", min: 0, max: 14,
+                       ticks:[3,4,5,6,7] 
                      } 
                   ],
             grid: {
               markings: [
-                { color: "#fcc", lineWidth: 1, yaxis: { from: 20 *1024/100, to: 25 *1024/100}  },
+                { color: one.color('hsl(' + gradiente*36 + ',' + 100 + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/10, to: (gradiente)/10   }  },
+                { color: one.color('hsl(' + gradiente*36 + ',' + 100 + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/10, to: (gradiente)/10}  },
+                { color: one.color('hsl(' + gradiente*36 + ',' + 100 + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/10, to: (gradiente)/10}  },
+                { color: one.color('hsl(' + gradiente*36 + ',' + 100 + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/10, to: (gradiente)/10}  },
+                { color: one.color('hsl(' + gradiente*36 + ',' + 100 + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/10, to: (gradiente)/10}  },
+                { color: one.color('hsl(' + gradiente*36 + ',' + 100 + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/10, to: (gradiente)/10}  },
+                { color: one.color('hsl(' + gradiente*36 + ',' + 100 + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/10, to: (gradiente)/10}  },
+                { color: one.color('hsl(' + gradiente*36 + ',' + 100 + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/10, to: (gradiente)/10}  },
+                { color: one.color('hsl(' + gradiente*36 + ',' + 100 + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/10, to: (gradiente)/10}  },
+                { color: one.color('hsl(' + gradiente*36 + ',' + 100 + ',' + 50 + ')').css(), lineWidth: 1, yaxis: { from: (gradiente++)/10, to: (gradiente)/10}  },
               ]
             }
           });
@@ -270,6 +299,7 @@ head
           #slider_BW
           p
           #flot1.demo-flot(style="width:800px;height:400px")
+          #drawing(style="width:800px;height:400px;background-color:#c0c0c0")
           #footer
           h2
             | Instruções

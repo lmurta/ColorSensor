@@ -29,8 +29,8 @@ var term = require( 'terminal-kit' ).terminal ;
 //var ArduinoFirmata = require('arduino-firmata');
 //var arduino = new ArduinoFirmata().connect();
 
-var portName = "/dev/ttyUSB0"; //Nano
-//var portName = "/dev/ttyACM0"; //UNO
+//var portName = "/dev/ttyUSB0"; //Nano
+var portName = "/dev/ttyACM0"; //UNO
 
 var scraper = require('json-scrape')();
 var serialport = require("serialport");
@@ -135,12 +135,18 @@ app.use(function(err, req, res, next) {
 
 sp.on("data", function (data) {
   //console.log(data);
+
+
+
   scraper.write(data.toString());
 
 
 });
 scraper.on('data', function (cleandata) {
     //console.log(cleandata);
+
+
+
     if (typeof cleandata.RAW_R != "number") {
       console.log('This is not number');
       return;
@@ -194,7 +200,12 @@ io.sockets.on('connection', function(socket){
    socket.emit('serverStartTicker', { logInterval: logInterval });
 
    setInterval(function(){
-
+    //////////////////////DEBUG
+    new_data["RAW_R"] = Math.random()*100000;
+    new_data["RAW_G"] = Math.random()*100000;
+    new_data["RAW_B"] = Math.random()*100000;
+    console.log(new_data);
+    //return;
       socket.emit('new_data', new_data);
 
         socket.emit('serverStartTicker', { logInterval: logInterval });
