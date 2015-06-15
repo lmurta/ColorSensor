@@ -38,12 +38,12 @@ head
       var fWhite=[];
       var Correction=[];
       var myColor,hueColor;
-      fBlack[0] = 21000; 
-      fBlack[1] = 13000;
-      fBlack[2] = 21000;
-      fWhite[0]= 34000;
-      fWhite[1]= 21000;
-      fWhite[2]= 34000;
+      fBlack[0] = 3200; 
+      fBlack[1] = 3800;
+      fBlack[2] = 5300;
+      fWhite[0]= 16700;
+      fWhite[1]= 19400;
+      fWhite[2]= 27000;
       Correction[0] = 0;
       Correction[1] = 0;
       Correction[2] = 0;
@@ -65,24 +65,24 @@ head
         $( "#slider_RB" ).slider({min: 0,max: 50000,value: fBlack[0],slide: function( event, ui ) {$( "#value_RB" ).text( "RB:" + ui.value );fBlack[0]=ui.value;update(); }});
         $( "#slider_GB" ).slider({min: 0,max: 50000,value: fBlack[1],slide: function( event, ui ) {$( "#value_GB" ).text( "GB:" + ui.value );fBlack[1]=ui.value;update(); }});
         $( "#slider_BB" ).slider({min: 0,max: 50000,value: fBlack[2],slide: function( event, ui ) {$( "#value_BB" ).text( "BB:" + ui.value );fBlack[2]=ui.value;update(); }});
-        $( "#slider_RW" ).slider({min: 10000,max: 500000,value: fWhite[0],slide: function( event, ui ) {$( "#value_RW" ).text( "RW:" + ui.value );fWhite[0]=ui.value;update(); }});
-        $( "#slider_GW" ).slider({min: 10000,max: 500000,value: fWhite[1],slide: function( event, ui ) {$( "#value_GW" ).text( "GW:" + ui.value );fWhite[1]=ui.value;update();  }});
-        $( "#slider_BW" ).slider({min: 10000,max: 500000,value: fWhite[2],slide: function( event, ui ) {$( "#value_BW" ).text( "BW:" + ui.value );fWhite[2]=ui.value;update();  }});
+        $( "#slider_RW" ).slider({min: 10000,max: 200000,value: fWhite[0],slide: function( event, ui ) {$( "#value_RW" ).text( "RW:" + ui.value );fWhite[0]=ui.value;update(); }});
+        $( "#slider_GW" ).slider({min: 10000,max: 200000,value: fWhite[1],slide: function( event, ui ) {$( "#value_GW" ).text( "GW:" + ui.value );fWhite[1]=ui.value;update();  }});
+        $( "#slider_BW" ).slider({min: 10000,max: 200000,value: fWhite[2],slide: function( event, ui ) {$( "#value_BW" ).text( "BW:" + ui.value );fWhite[2]=ui.value;update();  }});
         $( "#slider_RM" ).slider({min: -100,max: 100,value: Correction[0],slide: function( event, ui ) {$( "#value_RM" ).text( "RM:" + ui.value );Correction[0]=ui.value;update(); }});
         $( "#slider_GM" ).slider({min: -100,max: 100,value: Correction[1],slide: function( event, ui ) {$( "#value_GM" ).text( "GM:" + ui.value );Correction[1]=ui.value;update(); }});
         $( "#slider_BM" ).slider({min: -100,max: 100,value: Correction[2],slide: function( event, ui ) {$( "#value_BM" ).text( "BM:" + ui.value );Correction[2]=ui.value;update(); }});
         $( "#setBlack").click( function(){
              console.log('button clicked');
-             fBlack[0] = RAW[0];$( "#slider_RB" ).slider('value', fWhite[0]);
-             fBlack[1] = RAW[1];$( "#slider_GB" ).slider('value', fWhite[1]);
-             fBlack[2] = RAW[0];$( "#slider_BB" ).slider('value', fWhite[2]);
+             fBlack[0] = RAW[0]; $( "#slider_RB" ).slider('value', fBlack[0]); $( "#value_RB" ).text( "RB:" + fBlack[0] );
+             fBlack[1] = RAW[1]; $( "#slider_GB" ).slider('value', fBlack[1]); $( "#value_GB" ).text( "GB:" + fBlack[1] );
+             fBlack[2] = RAW[2]; $( "#slider_BB" ).slider('value', fBlack[2]); $( "#value_BB" ).text( "BB:" + fBlack[2] );
            }
         );
         $( "#setWhite").click( function(){
               console.log('button clicked');
-             fWhite[0] = RAW[0]; $( "#slider_RW" ).slider('value', fWhite[0]);
-             fWhite[1] = RAW[1]; $( "#slider_GW" ).slider('value', fWhite[1]);
-             fWhite[2] = RAW[2]; $( "#slider_BW" ).slider('value', fWhite[2]);
+             fWhite[0] = RAW[0]; $( "#slider_RW" ).slider('value', fWhite[0]);$( "#value_RW" ).text( "RW:" + fWhite[0] );
+             fWhite[1] = RAW[1]; $( "#slider_GW" ).slider('value', fWhite[1]);$( "#value_GW" ).text( "GW:" + fWhite[1] );
+             fWhite[2] = RAW[2]; $( "#slider_BW" ).slider('value', fWhite[2]);$( "#value_BW" ).text( "BW:" + fWhite[2] );
            }
         );
         startTicker();
@@ -97,7 +97,7 @@ head
           }
         });
         var socket = io();
-        var totalPoints = 1000;
+        var totalPoints = 100;
         var Raw=[];
         var dataToPlot=new Array(1);
         var dataToPlotLabel =new Array(1);
@@ -120,9 +120,9 @@ head
           $('#div_an0').text("R:"+data.RAW_R);
           $('#div_an1').text("G:"+data.RAW_G);
           $('#div_an2').text("B:"+data.RAW_B);
-          $('#div_R').text("R:"+RGB2[0]);
-          $('#div_G').text("G:"+RGB2[1]);
-          $('#div_B').text("B:"+RGB2[2]);
+          $('#div_R').text("R:"+RGB2[0].toFixed(2));
+          $('#div_G').text("G:"+RGB2[1].toFixed(2));
+          $('#div_B').text("B:"+RGB2[2].toFixed(2));
           $('#div_RGB').css('background-color','rgb(' + RGB2[0] + ',' + RGB2[1] + ',' + RGB2[2] + ')');
           //console.log(d0);
           //socket.emit('my other event', { my: 'client do server' });
@@ -139,8 +139,9 @@ head
           //hueColor = myColor.saturation(1).value(1);
           //huecolor = hueColor.red(0);
           //$('#div_oneColor').css('background-color','rgb(' + hueColor.red() + ',' + hueColor.green() + ',' + hueColor.blue() + ')');
-          $('#div_oneColor').css('background-color',myColor.css());
-          $('#div_oneColor').text(myColor.hue()) ;
+      //    $('#div_oneColor').css('background-color',myColor.css());
+          $('#div_oneColor').css('background-color',one.color('hsl(' + myColor.hue()*360 + ',' + 100 + ',' + 50 + ')').css());
+          $('#div_oneColor').text(myColor.hue().toFixed(2)) ;
           dataToPlot[0].push([now,myColor.hue()]);
           dataToPlotLabel[0] = "HUE";
           var gradiente=0;

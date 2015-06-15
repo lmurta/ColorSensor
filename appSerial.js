@@ -69,12 +69,12 @@ var RGB= [] ;
 var RGB2= [] ;
 var fBlack =[];
 var fWhite=[];
-  fBlack[0] = 21000;
-  fBlack[1] = 13000;
-  fBlack[2] = 21000;
-  fWhite[0]= 34000 ;
-  fWhite[1]= 21000 ;
-  fWhite[2]= 34000 ;
+      fBlack[0] = 3200; 
+      fBlack[1] = 3800;
+      fBlack[2] = 5300;
+      fWhite[0]= 16700;
+      fWhite[1]= 19400;
+      fWhite[2]= 27000;
 
 var new_data = {};
 
@@ -83,7 +83,7 @@ var dateformat = require('date-format');
 var date = new Date() ;
 
 var dataLog = false;
-var logInterval = 1000 * 2; //1000 * X segundos
+var logInterval = 1000 * 1; //1000 * X segundos
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -201,10 +201,10 @@ io.sockets.on('connection', function(socket){
 
    setInterval(function(){
     //////////////////////DEBUG
-    new_data["RAW_R"] = 10000 + Math.random()*100000;
-    new_data["RAW_G"] = 10000 + Math.random()*100000;
-    new_data["RAW_B"] = 10000 + Math.random()*100000;
-    console.log(new_data);
+    //new_data["RAW_R"] = 10000 + Math.random()*100000;
+    //new_data["RAW_G"] = 10000 + Math.random()*100000;
+    //new_data["RAW_B"] = 10000 + Math.random()*100000;
+    //console.log(new_data);
     //return;
       socket.emit('new_data', new_data);
 
