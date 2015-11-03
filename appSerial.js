@@ -1,3 +1,9 @@
+/*
+sudo npm install -g
+
+node appSerial.js
+*/
+
 'use strict';
 var express = require('express');
 var debug = require('debug')('ColorSensor:server');
@@ -29,8 +35,8 @@ var term = require( 'terminal-kit' ).terminal ;
 //var ArduinoFirmata = require('arduino-firmata');
 //var arduino = new ArduinoFirmata().connect();
 
-//var portName = "/dev/ttyUSB0"; //Nano
-var portName = "/dev/ttyACM0"; //UNO
+var portName = "/dev/ttyUSB0"; //Nano
+//var portName = "/dev/ttyACM0"; //UNO
 
 var scraper = require('json-scrape')();
 var serialport = require("serialport");
