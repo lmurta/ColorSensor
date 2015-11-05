@@ -1,7 +1,7 @@
 /*
 sudo npm install -g
 
-node appSerial.js
+nodemon appSerial.js
 */
 
 'use strict';
@@ -75,12 +75,12 @@ var RGB= [] ;
 var RGB2= [] ;
 var fBlack =[];
 var fWhite=[];
-      fBlack[0] = 3200; 
-      fBlack[1] = 3800;
-      fBlack[2] = 5300;
-      fWhite[0]= 16700;
-      fWhite[1]= 19400;
-      fWhite[2]= 27000;
+      fBlack[0] = 9000; 
+      fBlack[1] = 8100;
+      fBlack[2] = 9600;
+      fWhite[0]= 99000;
+      fWhite[1]= 92000;
+      fWhite[2]= 104000;
 
 var new_data = {};
 

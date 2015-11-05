@@ -11,6 +11,18 @@
   text-overflow: ellipsis;
   text-shadow: 1px 1px 0 rgba(0,0,0,0.25) ;
 }
+.beerLabel  {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  border: none;
+  font: normal normal bold 42px/1 "PT Sans Narrow", Helvetica, sans-serif;
+  #color: rgba(152,0,0,1);
+  text-align: left;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.25) ;
+}
 .colorTick  {  color: #ccc;}
 .colorA0  {  color: #edc240;}
 .colorA1  {  color: #2B65EC;}

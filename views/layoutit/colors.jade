@@ -38,15 +38,31 @@ head
       var fWhite=[];
       var Correction=[];
       var myColor,hueColor;
-      fBlack[0] = 3200; 
-      fBlack[1] = 3800;
-      fBlack[2] = 5300;
-      fWhite[0]= 16700;
-      fWhite[1]= 19400;
-      fWhite[2]= 27000;
+      fBlack[0] = 9000; 
+      fBlack[1] = 8100;
+      fBlack[2] = 9600;
+      fWhite[0]= 99000;
+      fWhite[1]= 92000;
+      fWhite[2]= 104000;
       Correction[0] = 0;
       Correction[1] = 0;
       Correction[2] = 0;
+
+      var colorName = {
+        "2 Pale lager, Witbier, Pilsener, Berliner Weisse": "#F6F513",
+        "3 Maibock, Blonde Ale ": "#F6F513",
+        "4 Weissbier ": "#ECE61A",
+        "6 American Pale Ale, India Pale Ale ": "#D5BC26",
+        "8 Weissbier, Saison ": "#BF923B",
+        "10 English Bitter, ESB ": "#BF813A",
+        "13 Biere de Garde, Double IPA ": "#BC6733",
+        "17 Dark lager, Vienna lager, Marzen, Amber Ale ": "#8D4C32",
+        "20 Brown Ale, Bock, Dunkel, Dunkelweizen ": "#5D341A",
+        "24 Irish Dry Stout, Doppelbock, Porter ": "#261716",
+        "29 Stout ": "#0F0B0A",
+        "35 Foreign Stout, Baltic Porter ": "#080707",
+        "40+ Imperial Stout ": "#030403",
+      };
       function toggle(button){
         if(document.getElementById("buttonToggle").value=="OFF"){
           socket.emit('button update event', { status: 'OFF' });
@@ -140,6 +156,17 @@ head
           //huecolor = hueColor.red(0);
           //$('#div_oneColor').css('background-color','rgb(' + hueColor.red() + ',' + hueColor.green() + ',' + hueColor.blue() + ')');
       //    $('#div_oneColor').css('background-color',myColor.css());
+
+          var foundColorName = "-";
+          $.each(colorName, function(key, value) {
+              //console.log(key + value);
+              if (myColor.equals(one.color(value), 0.2)) {
+                  foundColorName = key;
+                  
+              }
+          });
+          $('#div_foundColorName').text(foundColorName);
+
           $('#div_oneColor').css('background-color',one.color('hsl(' + myColor.hue()*360 + ',' + 100 + ',' + 50 + ')').css());
           $('#div_oneColor').text(myColor.hue().toFixed(2)) ;
           dataToPlot[0].push([now,myColor.hue()]);
@@ -291,11 +318,10 @@ head
           p
           #flot1.demo-flot(style="width:800px;height:400px")
           #footer
-          h2
-            | Instruções
-          ul
-            li 
-             | Conectar os sensores às portas analógicas A0-A5
+            #div_RGB.beerLabel(style="background-color:#c0c0c0") -
+            #div_foundColorName.beerLabel -
+            
+            include beer_colors.jade
 
         .col-md-2.column
           h3
@@ -319,7 +345,6 @@ head
           #div_R.analogLabel.colorA3(style="color:#FF0000") R
           #div_G.analogLabel.colorA4(style="color:#00FF00") G
           #div_B.analogLabel.colorA5(style="color:#0000FF") B
-          #div_RGB.analogLabel(style="background-color:#c0c0c0") RGB
           #div_oneColor.analogLabel(style="background-color:#c0c0c0") oneColor
 
 
