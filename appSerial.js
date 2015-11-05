@@ -35,8 +35,8 @@ var term = require( 'terminal-kit' ).terminal ;
 //var ArduinoFirmata = require('arduino-firmata');
 //var arduino = new ArduinoFirmata().connect();
 
-var portName = "/dev/ttyUSB0"; //Nano
-//var portName = "/dev/ttyACM0"; //UNO
+//var portName = "/dev/ttyUSB0"; //Nano
+var portName = "/dev/ttyACM0"; //UNO
 
 var scraper = require('json-scrape')();
 var serialport = require("serialport");
@@ -46,7 +46,7 @@ var SerialPort = serialport.SerialPort; // localize object constructor
 // the more the readings will be smoothed, but the slower the output will
 // respond to the input.  Using a constant rather than a normal variable lets
 // use this value to determine the size of the readings array.
-var smooth_numReadings = 10;
+var smooth_numReadings = 1;
 var smooth_readings_R= new Array(smooth_numReadings);      // the readings from the analog input
 var smooth_readings_G= new Array(smooth_numReadings);      // the readings from the analog input
 var smooth_readings_B= new Array(smooth_numReadings);      // the readings from the analog input
@@ -89,7 +89,7 @@ var dateformat = require('date-format');
 var date = new Date() ;
 
 var dataLog = false;
-var logInterval = 1000 * 1; //1000 * X segundos
+var logInterval = 1000 * 4; //1000 * X segundos
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -188,15 +188,18 @@ scraper.on('data', function (cleandata) {
     new_data["RAW_B"] = RAW[2];
 
 
-
+/*
     var i;
     for (i=0; i<3; i++) {
       RGB2[i] = Math.floor(((RAW[i] - fBlack[i]) * 255.0 )/(fWhite[i] - fBlack[i]) );
       if (RGB2[i] < 0) RGB2[i]=0;
       if (RGB2[i] > 255) RGB2[i]=255;
     }
-    term.bgColorRgb( RGB2[0] ,RGB2[1] , RGB2[2] , "     " ) 
-    console.log(RGB2[0],RGB2[1],RGB2[2],RAW[0],RAW[1],RAW[2]);
+*/
+//    term.bgColorRgb( RGB2[0] ,RGB2[1] , RGB2[2] , "     " ) 
+//    console.log(RGB2[0],RGB2[1],RGB2[2],RAW[0],RAW[1],RAW[2]);
+    term.bgColorRgb( RGB[0] ,RGB[1] , RGB[2] , "     " ) 
+    console.log(RGB[0],RGB[1],RGB[2],RAW[0],RAW[1],RAW[2]);
 
     //console.log(cleandata.A0);
 });

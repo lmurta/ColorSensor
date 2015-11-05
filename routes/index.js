@@ -32,5 +32,8 @@ router.get('/dht11', function (req, res, next) {
 router.get('/colors', function (req, res, next) {
   res.render('layoutit/colors', { title: "Color Sensor"});
 });
+router.get('/tcs3200', function (req, res, next) {
+  res.render('layoutit/tcs3200', { title: "Color Sensor"});
+});
 
 module.exports = router;
