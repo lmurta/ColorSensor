@@ -1,0 +1,2 @@
+nodemon appTCS3200.js
+http://localhost:3000/tcs3200
