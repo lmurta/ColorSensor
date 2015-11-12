@@ -49,7 +49,7 @@ head
       fWhite[0]= 50;
       fWhite[1]= 46;
       fWhite[2]= 70;
-      Correction[0] = 0;
+      Correction[0] = 30;
       Correction[1] = 0;
       Correction[2] = 0;
 
@@ -83,12 +83,13 @@ head
       }
       $(function() {
         //alert('Hello, ' + one.color('#650042').lightness(.3).green(.4).hex() + ' world!');
-        $( "#slider_RB" ).slider({min: 0,max: 50000,value: fBlack[0],slide: function( event, ui ) {$( "#value_RB" ).text( "RB:" + ui.value );fBlack[0]=ui.value;update(); }});
-        $( "#slider_GB" ).slider({min: 0,max: 50000,value: fBlack[1],slide: function( event, ui ) {$( "#value_GB" ).text( "GB:" + ui.value );fBlack[1]=ui.value;update(); }});
-        $( "#slider_BB" ).slider({min: 0,max: 50000,value: fBlack[2],slide: function( event, ui ) {$( "#value_BB" ).text( "BB:" + ui.value );fBlack[2]=ui.value;update(); }});
-        $( "#slider_RW" ).slider({min: 10000,max: 200000,value: fWhite[0],slide: function( event, ui ) {$( "#value_RW" ).text( "RW:" + ui.value );fWhite[0]=ui.value;update(); }});
-        $( "#slider_GW" ).slider({min: 10000,max: 200000,value: fWhite[1],slide: function( event, ui ) {$( "#value_GW" ).text( "GW:" + ui.value );fWhite[1]=ui.value;update();  }});
-        $( "#slider_BW" ).slider({min: 10000,max: 200000,value: fWhite[2],slide: function( event, ui ) {$( "#value_BW" ).text( "BW:" + ui.value );fWhite[2]=ui.value;update();  }});
+        $( "#slider_RB" ).slider({min: 0,max: 100,value: fBlack[0],slide: function( event, ui ) {$( "#value_RB" ).text( "RB:" + ui.value );fBlack[0]=ui.value;update(); }});
+        $( "#slider_GB" ).slider({min: 0,max: 100,value: fBlack[1],slide: function( event, ui ) {$( "#value_GB" ).text( "GB:" + ui.value );fBlack[1]=ui.value;update(); }});
+        $( "#slider_BB" ).slider({min: 0,max: 100,value: fBlack[2],slide: function( event, ui ) {$( "#value_BB" ).text( "BB:" + ui.value );fBlack[2]=ui.value;update(); }});
+        $( "#slider_RW" ).slider({min: 10,max: 200,value: fWhite[0],slide: function( event, ui ) {$( "#value_RW" ).text( "RW:" + ui.value );fWhite[0]=ui.value;update(); }});
+        $( "#slider_GW" ).slider({min: 10,max: 200,value: fWhite[1],slide: function( event, ui ) {$( "#value_GW" ).text( "GW:" + ui.value );fWhite[1]=ui.value;update();  }});
+        $( "#slider_BW" ).slider({min: 10,max: 200,value: fWhite[2],slide: function( event, ui ) {$( "#value_BW" ).text( "BW:" + ui.value );fWhite[2]=ui.value;update();  }});
+
         $( "#slider_RM" ).slider({min: -100,max: 100,value: Correction[0],slide: function( event, ui ) {$( "#value_RM" ).text( "RM:" + ui.value );Correction[0]=ui.value;update(); }});
         $( "#slider_GM" ).slider({min: -100,max: 100,value: Correction[1],slide: function( event, ui ) {$( "#value_GM" ).text( "GM:" + ui.value );Correction[1]=ui.value;update(); }});
         $( "#slider_BM" ).slider({min: -100,max: 100,value: Correction[2],slide: function( event, ui ) {$( "#value_BM" ).text( "BM:" + ui.value );Correction[2]=ui.value;update(); }});
@@ -154,7 +155,7 @@ head
           var i;
           for (i=0; i<3; i++) {
             RGB2[i] = Math.floor(((RAW[i] - fBlack[i]) * 255.0 )/(fWhite[i] - fBlack[i]) );
-            RGB2[i] += Correction[i];
+            RGB2[i] += Correction[0];
             if (RGB2[i] < 0) RGB2[i]=0;
             if (RGB2[i] > 255) RGB2[i]=255;
           };
@@ -164,15 +165,18 @@ head
           //huecolor = hueColor.red(0);
           //$('#div_oneColor').css('background-color','rgb(' + hueColor.red() + ',' + hueColor.green() + ',' + hueColor.blue() + ')');
       //    $('#div_oneColor').css('background-color',myColor.css());
-
-          var foundColorName = "-";
-          $.each(colorName, function(key, value) {
-              //console.log(key + value);
-              if (myColor.equals(one.color(value), 0.2)) {
-                  foundColorName = key;
-                  
-              }
-          });
+          var angulo = myColor.hue() * 360;
+          var foundColorName = angulo;
+          //se for amarelo
+          if ( angulo < 60){
+            $.each(colorName, function(key, value) {
+                //console.log(key + value);
+                if (myColor.equals(one.color(value), 0.1)) {
+                    foundColorName = key;
+                    
+                }
+            });
+          }
           $('#div_foundColorName').text(foundColorName);
 
           $('#div_oneColor').css('background-color',one.color('hsl(' + myColor.hue()*360 + ',' + 100 + ',' + 50 + ')').css());
@@ -264,7 +268,7 @@ head
           p
           #slider_BW
           p
-          #flot1.demo-flot(style="width:600px;height:200px")
+          #flot1.demo-flot(style="width:760px;height:200px")
           #footer
             #div_RGB.beerLabel(style="background-color:#c0c0c0") -
             #div_foundColorName.beerLabel -
