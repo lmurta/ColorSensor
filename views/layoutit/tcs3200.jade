@@ -1,7 +1,7 @@
 doctype html(lang='en')
 head
     meta(charset='utf-8')
-    title PHT Arduinos Sensors
+    title TCS3200 Color Sensor
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     meta(name='description', content='')
     meta(name='author', content='')
@@ -43,12 +43,12 @@ head
       var fWhite=[];
       var Correction=[];
       var myColor,hueColor;
-      fBlack[0] = 4; 
+      fBlack[0] = 5; 
       fBlack[1] = 4;
-      fBlack[2] = 5;
-      fWhite[0]= 50;
-      fWhite[1]= 46;
-      fWhite[2]= 70;
+      fBlack[2] = 7;
+      fWhite[0]= 39;
+      fWhite[1]= 39;
+      fWhite[2]= 64;
       Correction[0] = 30;
       Correction[1] = 0;
       Correction[2] = 0;
@@ -171,7 +171,7 @@ head
           if ( angulo < 60){
             $.each(colorName, function(key, value) {
                 //console.log(key + value);
-                if (myColor.equals(one.color(value), 0.1)) {
+                if (myColor.equals(one.color(value), 0.2)) {
                     foundColorName = key;
                     
                 }
